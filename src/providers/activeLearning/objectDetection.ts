@@ -17,6 +17,12 @@ export type DetectedObject = {
  */
 export type ImageObject = tf.Tensor3D | ImageData | HTMLImageElement | HTMLCanvasElement | HTMLVideoElement;
 
+export type DeepDetectServer = {
+  apiUrl: string;
+  service: string;
+  confidence: number;
+}
+
 /**
  * Object Dectection loads active learning models and predicts regions
  */
@@ -29,6 +35,8 @@ export class ObjectDetection {
 
     private model: tf.GraphModel;
     private jsonClasses: JSON;
+
+    private deepdetect: DeepDetectServer;
 
     /**
      * Dispose the tensors allocated by the model. You should call this when you
@@ -70,6 +78,33 @@ export class ObjectDetection {
     }
 
     /**
+     * Load a DeepDetect service from an api url and a service name.
+     * @param modelApiUrl http URL to the DeepDetect server
+     * @param modelServiceName Service name on the DeepDetect server
+     */
+    public async loadDeepDetect(
+      modelDdUrl: string,
+      modelDdService: string,
+      modelDdConfidence: number
+    ) {
+        try {
+            this.deepdetect = {
+              apiUrl: modelDdUrl,
+              service: modelDdService,
+              confidence: modelDdConfidence
+            }
+
+          // TODO test modelDdUrl and raise exception if not accessible
+          // TODO test modelDdService and raise exception if not accessible
+
+            this.modelLoaded = true;
+        } catch (err) {
+            this.modelLoaded = false;
+            throw err;
+        }
+    }
+
+    /**
      * Predict Regions from an HTMLImageElement returning list of IRegion.
      * @param image ImageObject to be used for prediction
      * @param predictTag Flag indicates if predict only region bounding box of tag too.
@@ -80,6 +115,7 @@ export class ObjectDetection {
         : Promise<IRegion[]> {
         const regions: IRegion[] = [];
 
+          console.log(image)
         const predictions = await this.detect(image);
         predictions.forEach((prediction) => {
             const left = Math.max(0, prediction.bbox[0] * xRatio);
@@ -131,8 +167,11 @@ export class ObjectDetection {
      *
      */
     public async detect(img: ImageObject, maxNumBoxes: number = 20): Promise<DetectedObject[]> {
+      console.log(img);
         if (this.model) {
             return this.infer(img, maxNumBoxes);
+        } else if (this.deepdetect.service.length > 0) {
+            return this.inferDeepDetect(img, maxNumBoxes);
         }
 
         return [];
@@ -189,6 +228,69 @@ export class ObjectDetection {
         tf.setBackend(prevBackend);
 
         return this.buildDetectedObjects(width, height, boxes, maxScores, indexes, classes);
+    }
+
+    /**
+     * Infers through the DeepDetect server
+     *
+     * @param img The image to classify. Can be DOM element image
+     * @param maxNumBoxes The maximum number of bounding boxes of detected
+     * objects. There can be multiple objects of the same class, but at different
+     * locations. Defaults to 20.
+     */
+    private async inferDeepDetect(img: ImageObject, maxNumBoxes: number = 20): Promise<DetectedObject[]> {
+
+        let data = "";
+        if ( img instanceof HTMLCanvasElement) {
+          data = img.toDataURL('image/jpeg').replace(/^data:image\/\w+;base64,/, "");
+        } else {
+          return [];
+        }
+
+        const frameData = {
+          "service": this.deepdetect.service,
+          "parameters": {
+            "input": {},
+            "output": {
+              "confidence_threshold": 0.4,
+              "bbox": true
+            },
+            "mllib": {
+              "gpu": true
+            }
+          },
+          "data": [data]
+        }
+
+        const results = await axios.post(this.deepdetect.apiUrl + "/predict", frameData);
+        const objects: DetectedObject[] = [];
+
+        if(results.data.body &&
+          results.data.body.predictions &&
+          results.data.body.predictions[0] &&
+          results.data.body.predictions[0].classes &&
+          results.data.body.predictions[0].classes.length > 0) {
+
+          results.data.body.predictions[0].classes.forEach((c, i) => {
+
+            const bbox = [];
+            bbox[0] = c.bbox.xmin;
+            bbox[1] = c.bbox.ymax;
+            bbox[2] = c.bbox.xmax - c.bbox.xmin;
+            bbox[3] = c.bbox.ymin - c.bbox.ymax;
+
+            objects.push({
+                bbox: bbox as [number, number, number, number],
+                class: c.cat,
+                score: c.prob,
+            });
+
+          });
+
+        }
+
+      //return this.buildDetectedObjects(width, height, boxes, maxScores, indexes, classes);
+        return objects;
     }
 
     private buildDetectedObjects(

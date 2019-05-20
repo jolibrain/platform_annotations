@@ -207,11 +207,13 @@ export interface IProjectVideoSettings {
  * @member Coco - Specifies the default/generic pre-trained Coco-SSD model
  * @member File - Specifies to load a custom model from filesystem
  * @member Url - Specifies to load a custom model from a web server
+ * @member DeepDetect - Specifies to load a model from a deepdetect server
  */
 export enum ModelPathType {
     Coco = "coco",
     File = "file",
     Url = "url",
+    DeepDetect = "deepdetect",
 }
 
 /**
@@ -235,6 +237,9 @@ export interface IActiveLearningSettings {
     modelPathType: ModelPathType;
     modelPath?: string;
     modelUrl?: string;
+    modelDdUrl?: string;
+    modelDdService?: string;
+    modelDdConfidence?: number;
     autoDetect: boolean;
     predictTag: boolean;
 }

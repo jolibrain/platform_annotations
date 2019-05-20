@@ -94,7 +94,15 @@ export class ActiveLearningService {
             modelPath = this.settings.modelUrl;
         }
 
-        await this.objectDetection.load(modelPath);
+        if (this.settings.modelPathType === ModelPathType.DeepDetect) {
+          await this.objectDetection.loadDeepDetect(
+            this.settings.modelDdUrl,
+            this.settings.modelDdService,
+            this.settings.modelDdConfidence
+          );
+        } else {
+          await this.objectDetection.load(modelPath);
+        }
     }
 
     private getAppPath = () => {

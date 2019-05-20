@@ -592,6 +592,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             await this.onAssetMetadataChanged(updatedAssetMetadata);
             this.setState({ selectedAsset: updatedAssetMetadata });
         } catch (e) {
+          console.log(e);
             throw new AppError(ErrorCode.ActiveLearningPredictionError, "Error predicting regions");
         }
     }
