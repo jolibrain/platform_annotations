@@ -389,6 +389,9 @@ export const spanish: IAppStrings = {
             csv: {
                 displayName: "Los valores separados por comas (CSV)",
             },
+            deepdetect: {
+                displayName: "DeepDetect Filebrowser",
+            },
         },
         messages: {
             saveSuccess: "Configuración de exportación guardada correctamente",

@@ -383,6 +383,9 @@ export interface IAppStrings {
             csv: {
                 displayName: string,
             },
+            deepdetect: {
+                displayName: string,
+            },
         },
         messages: {
             saveSuccess: string;
