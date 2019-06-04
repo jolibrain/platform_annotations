@@ -281,3 +281,37 @@ There are many ways to contribute to VoTT -- please review our [contribution gui
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see
 the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com)
 with any additional questions or comments.
+
+## Building Windows release on Linux
+
+Skip pre-flight check that will raise an issue with incompatible `webpack` config with `create-react-app`:
+
+```
+echo SKIP_PREFLIGHT_CHECK=true >> .env
+```
+
+Add missing packages raising errors from `wine` yarn release command:
+
+```
+yarn add rollup react-dnd react-dnd-html5-backend
+```
+
+Start `wine` docker to launch `release` command:
+
+
+```
+docker run --rm -ti \
+  --env-file <(env | grep -iE 'DEBUG|NODE_|ELECTRON_|YARN_|NPM_|CI|CIRCLE|TRAVIS_TAG|TRAVIS|TRAVIS_REPO_|TRAVIS_BUILD_|TRAVIS_BRANCH|TRAVIS_PULL_REQUEST_|APPVEYOR_|CSC_|GH_|GITHUB_|BT_|AWS_|STRIP|BUILD_') \
+  --env ELECTRON_CACHE="/root/.cache/electron" \
+  --env ELECTRON_BUILDER_CACHE="/root/.cache/electron-builder" \
+  -v ${PWD}:/project \
+  -v ${PWD##*/}-node-modules:/project/node_modules \
+  -v ~/.cache/electron:/root/.cache/electron \
+  -v ~/.cache/electron-builder:/root/.cache/electron-builder \
+  electronuserland/builder:wine
+
+yarn install
+yarn release
+
+# current issue with tensorflow tfjs: https://github.com/tensorflow/tfjs/issues/1645
+```
