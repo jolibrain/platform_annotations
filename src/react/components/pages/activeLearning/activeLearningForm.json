@@ -80,7 +80,8 @@
                 },
                 {
                     "required": [
-                        "modelDeepdetect"
+                        "modelDdUrl",
+                        "modelDdService"
                     ],
                     "properties": {
                         "modelPathType": {
