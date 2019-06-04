@@ -314,4 +314,5 @@ yarn install
 yarn release
 
 # current issue with tensorflow tfjs: https://github.com/tensorflow/tfjs/issues/1645
+# solve by adding the ```skipLibCheck: true``` to tsconfig.json
 ```
