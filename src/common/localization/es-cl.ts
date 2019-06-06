@@ -207,6 +207,10 @@ export const spanish: IAppStrings = {
                     tall: "Alto",
                 },
             },
+            webAutoindex: {
+                title: "Remote HTTP Options",
+                remoteUrl: "Remote HTTP Url"
+            },
             local: {
                 title: "Sistema de Archivos Local",
                 folderPath: "Ruta de la carpeta",

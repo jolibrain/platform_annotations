@@ -204,6 +204,10 @@ export interface IAppStrings {
                     tall: string;
                 }
             },
+            webAutoindex: {
+                title: string;
+                remoteUrl: string;
+            },
             local: {
                 title: string;
                 folderPath: string;

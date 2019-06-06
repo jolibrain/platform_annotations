@@ -205,6 +205,10 @@ export const english: IAppStrings = {
                     tall: "Tall",
                 },
             },
+            webAutoindex: {
+                title: "Remote HTTP Options",
+                remoteUrl: "Remote HTTP Url"
+            },
             local: {
                 title: "Local File System",
                 folderPath: "Folder Path",

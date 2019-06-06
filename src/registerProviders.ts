@@ -7,6 +7,7 @@ import { DeepdetectExportProvider } from "./providers/export/deepdetect";
 import { AssetProviderFactory } from "./providers/storage/assetProviderFactory";
 import { AzureBlobStorage } from "./providers/storage/azureBlobStorage";
 import { BingImageSearch } from "./providers/storage/bingImageSearch";
+import { WebAutoIndexJson } from "./providers/storage/webAutoIndexJson";
 import { LocalFileSystemProxy } from "./providers/storage/localFileSystemProxy";
 import { StorageProviderFactory } from "./providers/storage/storageProviderFactory";
 import registerToolbar from "./registerToolbar";
@@ -31,6 +32,11 @@ export default function registerProviders() {
         displayName: strings.connections.providers.azureBlob.title,
         factory: (options) => new AzureBlobStorage(options),
     });
+    StorageProviderFactory.register({
+        name: "webAutoIndexJson",
+        displayName: strings.connections.providers.webAutoindex.title,
+        factory: (options) => new WebAutoIndexJson(options),
+    });
 
     // Asset Providers
     AssetProviderFactory.register({
@@ -48,6 +54,11 @@ export default function registerProviders() {
         name: "bingImageSearch",
         displayName: strings.connections.providers.bing.title,
         factory: (options) => new BingImageSearch(options),
+    });
+    AssetProviderFactory.register({
+        name: "webAutoIndexJson",
+        displayName: strings.connections.providers.webAutoindex.title,
+        factory: (options) => new WebAutoIndexJson(options),
     });
 
     // Export Providers
