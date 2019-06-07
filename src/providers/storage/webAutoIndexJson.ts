@@ -73,7 +73,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param blobName - Name of blob in container
      */
     public async deleteFile(blobName: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error("Method deleteFile not implemented.");
     }
 
     /**
@@ -85,7 +85,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * from container
      */
     public async listFiles(path: string, ext?: string): Promise<string[]> {
-        throw new Error("Method not implemented.");
+        throw new Error("Method listFiles not implemented.");
     }
 
     /**
@@ -102,7 +102,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param containerName -
      */
     public async createContainer(containerName: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error("Method createContainer not implemented.");
     }
 
     /**
@@ -110,7 +110,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param containerName -
      */
     public async deleteContainer(containerName: string): Promise<void> {
-        throw new Error("Method not implemented.");
+        throw new Error("Method deleteContainer not implemented.");
     }
 
 
