@@ -56,7 +56,9 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param content - Content to write to blob (string or Buffer)
      */
     public async writeText(blobName: string, content: string | Buffer) {
-      await axios.post(path.join(this.writePath, this.options.containerName, blobName), content)
+      const filepath = path.join(this.writePath, this.options.containerName, blobName);
+      await axios.delete(filepath);
+      await axios.post(filepath, content);
     }
 
     /**
