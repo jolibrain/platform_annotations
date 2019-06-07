@@ -92,7 +92,7 @@ export class WebAutoIndexJson implements IAssetProvider {
       let items = response.data;
 
       if(ext && ext.length > 0) {
-        items = items.filter(f => f.indexOf(ext) > -1);
+        items = items.filter(f => f.name.indexOf(ext) > -1);
       }
 
       items = items.map(f => path.join(this.readPath, containerPath, f.name));
