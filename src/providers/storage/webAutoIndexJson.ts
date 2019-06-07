@@ -83,6 +83,8 @@ export class WebAutoIndexJson implements IAssetProvider {
      * from container
      */
     public async listFiles(containerPath: string, ext?: string): Promise<string[]> {
+      console.log(this.readPath);
+      console.log(containerPath);
         const response = await axios.get(path.join(this.readPath, containerPath));
 
       let items = response.data;
@@ -90,7 +92,10 @@ export class WebAutoIndexJson implements IAssetProvider {
       if(ext && ext.length > 0) {
         items = items.filter(f => f.indexOf(ext) > -1);
       }
-      items = items.map(f => path.join(this.readPath, containerPath, f.name));
+      items = items.map(f => {
+        console.log(f);
+        return path.join(this.readPath, containerPath, f.name);
+      });
 
         return items
     }
