@@ -137,7 +137,7 @@ export class WebAutoIndexJson implements IAssetProvider {
       .map(f => {
         return {
           filename: f.name,
-          path: path.join(window.location.origin, this.readPath, this.options.containerName, f.name)
+          path: window.location.origin + path.join(this.readPath, this.options.containerName, f.name)
         }
       });
 
