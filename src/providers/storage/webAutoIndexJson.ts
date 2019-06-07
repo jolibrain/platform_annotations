@@ -83,24 +83,21 @@ export class WebAutoIndexJson implements IAssetProvider {
      * from container
      */
     public async listFiles(containerPath: string, ext?: string): Promise<string[]> {
-      console.log(this.readPath);
-      console.log(containerPath);
-      if(!containerPath)
-      return null;
 
-        const response = await axios.get(path.join(this.readPath, containerPath));
+      if(!containerPath)
+        return null;
+
+      const response = await axios.get(path.join(this.readPath, containerPath));
 
       let items = response.data;
 
       if(ext && ext.length > 0) {
         items = items.filter(f => f.indexOf(ext) > -1);
       }
-      items = items.map(f => {
-        console.log(f);
-        return path.join(this.readPath, containerPath, f.name);
-      });
 
-        return items
+      items = items.map(f => path.join(this.readPath, containerPath, f.name));
+
+      return items
     }
 
     /**
@@ -133,17 +130,20 @@ export class WebAutoIndexJson implements IAssetProvider {
      * Retrieves assets from Web AutoIndex JSON based on options provided
      */
     public async getAssets(): Promise<IAsset[]> {
-        const response = await axios.get(path.join(this.readPath, this.options.containerName));
+      const response = await axios.get(path.join(this.readPath, this.options.containerName));
 
       const items = response.data
       .filter(f => f.type === 'file')
-      .map(f => path.join(this.readPath, this.options.containerName, f.name));
+      .map(f => {
+        return {
+          filename: f.name,
+          path: path.join(window.location.origin, this.readPath, this.options.containerName, f.name)
+        }
+      });
 
-      console.log(items);
-
-        return items
-            .map((filePath) => AssetService.createAssetFromFilePath(filePath))
-            .filter((asset) => asset.type !== AssetType.Unknown);
+      return items
+      .map(f => AssetService.createAssetFromFilePath(f.path, f.filename))
+      .filter((asset) => asset.type !== AssetType.Unknown);
     }
 
 }
