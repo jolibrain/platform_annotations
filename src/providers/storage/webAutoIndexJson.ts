@@ -121,7 +121,7 @@ export class WebAutoIndexJson implements IAssetProvider {
         const response = await axios.get(path.join(this.readPath, this.options.remoteUrl));
 
       const items = response.data
-      .filter(f => f.tupe === 'file')
+      .filter(f => f.type === 'file')
       .map(f => path.join(this.readPath, this.options.remoteUrl, f.name));
 
       console.log(items);
