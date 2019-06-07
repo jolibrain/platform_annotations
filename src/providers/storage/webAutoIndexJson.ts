@@ -85,6 +85,9 @@ export class WebAutoIndexJson implements IAssetProvider {
     public async listFiles(containerPath: string, ext?: string): Promise<string[]> {
       console.log(this.readPath);
       console.log(containerPath);
+      if(!containerPath)
+      return null;
+
         const response = await axios.get(path.join(this.readPath, containerPath));
 
       let items = response.data;
