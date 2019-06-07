@@ -207,7 +207,7 @@ export const english: IAppStrings = {
             },
             webAutoindex: {
                 title: "Remote HTTP Options",
-                remoteUrl: "Remote HTTP Url"
+                containerName: "Data Url"
             },
             local: {
                 title: "Local File System",

@@ -206,7 +206,7 @@ export interface IAppStrings {
             },
             webAutoindex: {
                 title: string;
-                remoteUrl: string;
+                containerName: string;
             },
             local: {
                 title: string;

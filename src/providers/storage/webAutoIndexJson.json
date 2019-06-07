@@ -1,11 +1,11 @@
 {
     "type": "object",
     "title": "${strings.connections.providers.webAutoindex.title}",
-    "required": ["remoteUrl"],
+    "required": ["containerName"],
     "properties": {
-        "remoteUrl": {
+        "containerName": {
             "type": "string",
-            "title": "${strings.connections.providers.webAutoindex.remoteUrl}"
+            "title": "${strings.connections.providers.webAutoindex.containerName}"
         }
     }
 }
