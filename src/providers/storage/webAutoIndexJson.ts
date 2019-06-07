@@ -78,14 +78,21 @@ export class WebAutoIndexJson implements IAssetProvider {
 
     /**
      * Lists files in container
-     * @param path - NOT USED IN CURRENT IMPLEMENTATION. Only uses container
-     * as specified in Azure Cloud Storage Options. Included to satisfy
-     * Storage Provider interface
+     * @param path - Container path
      * @param ext - Extension of files to filter on when retrieving files
      * from container
      */
-    public async listFiles(path: string, ext?: string): Promise<string[]> {
-        throw new Error("Method listFiles not implemented.");
+    public async listFiles(containerPath: string, ext?: string): Promise<string[]> {
+        const response = await axios.get(path.join(this.readPath, containerPath));
+
+      let items = response.data;
+
+      if(ext && ext.length > 0) {
+        items = items.filter(f => f.indexOf(ext) > -1);
+      }
+      items = items.map(f => path.join(this.readPath, containerPath, f.name));
+
+        return items
     }
 
     /**
