@@ -6,10 +6,9 @@ import Guard from "../../common/guard";
 import { createQueryString } from "../../common/utils";
 import * as path from 'path';
 
-
 /**
  * Options for Web AutoIndex JSON
- * @member removeUrl - remote url
+ * @member remoteUrl - remote url
  */
 export interface IWebAutoIndexJsonOptions {
     remoteUrl: string;
@@ -26,6 +25,9 @@ export class WebAutoIndexJson implements IAssetProvider {
      */
     public storageType: StorageType = StorageType.Cloud;
 
+  private readPath: string = "/data";
+  private writePath: string = "/filebrowser/api/resource";
+
     constructor(private options: IWebAutoIndexJsonOptions) {
         Guard.null(options);
     }
@@ -35,7 +37,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param blobName - Name of blob in container
      */
     public async readText(blobName: string): Promise<string> {
-      const response = await axios.get(path.join(this.options.remoteUrl, blobName))
+      const response = await axios.get(path.join(this.readPath, this.options.remoteUrl, blobName))
       return response.data;
     }
 
@@ -54,7 +56,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param content - Content to write to blob (string or Buffer)
      */
     public async writeText(blobName: string, content: string | Buffer) {
-      await axios.post(path.join(this.options.remoteUrl, blobName), content)
+      await axios.post(path.join(this.writePath, this.options.remoteUrl, blobName), content)
     }
 
     /**
@@ -116,11 +118,11 @@ export class WebAutoIndexJson implements IAssetProvider {
      * Retrieves assets from Web AutoIndex JSON based on options provided
      */
     public async getAssets(): Promise<IAsset[]> {
-        const response = await axios.get(this.options.remoteUrl);
+        const response = await axios.get(path.join(this.readPath, this.options.remoteUrl));
 
       const items = response.data
       .filter(f => f.tupe === 'file')
-      .map(f => path.join(this.options.remoteUrl, f.name));
+      .map(f => path.join(this.readPath, this.options.remoteUrl, f.name));
 
       console.log(items);
 
