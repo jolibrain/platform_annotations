@@ -206,8 +206,13 @@ export const english: IAppStrings = {
                 },
             },
             webAutoindex: {
-                title: "Remote HTTP Options",
-                containerName: "Data Url"
+                title: "DeepDetect Options",
+                containerName: "Data Url",
+                modelType: {
+                  title: "Model type",
+                  classification: "Classification",
+                  detection: "Detection"
+                }
             },
             local: {
                 title: "Local File System",
@@ -227,6 +232,7 @@ export const english: IAppStrings = {
             pan: "Pan",
             drawRectangle: "Draw Rectangle",
             drawPolygon: "Draw Polygon",
+            drawFullFrame: "Draw Full Frame",
             copyRectangle: "Copy Rectangle",
             copy: "Copy Regions",
             cut: "Cut Regions",

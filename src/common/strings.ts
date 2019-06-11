@@ -207,6 +207,11 @@ export interface IAppStrings {
             webAutoindex: {
                 title: string;
                 containerName: string;
+                modelType: {
+                    title: string;
+                    classification: string;
+                    detection: string;
+                }
             },
             local: {
                 title: string;
@@ -226,6 +231,7 @@ export interface IAppStrings {
             pan: string;
             drawRectangle: string;
             drawPolygon: string;
+            drawFullFrame: string;
             copyRectangle: string;
             copy: string;
             cut: string;

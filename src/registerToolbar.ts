@@ -8,6 +8,7 @@ export enum ToolbarItemName {
     SelectCanvas = "selectCanvas",
     DrawRectangle = "drawRectangle",
     DrawPolygon = "drawPolygon",
+    DrawFullFrame = "drawFullFrame",
     CopyRectangle = "copyRectangle",
     CopyRegions = "copyRegions",
     CutRegions = "cutRegions",
@@ -56,6 +57,15 @@ export default function registerToolbar() {
         group: ToolbarItemGroup.Canvas,
         type: ToolbarItemType.State,
         accelerators: ["P", "p"],
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DrawFullFrame,
+        tooltip: strings.editorPage.toolbar.drawFullFrame,
+        icon: "fa-compress",
+        group: ToolbarItemGroup.Canvas,
+        type: ToolbarItemType.State,
+        accelerators: ["F", "f"],
     });
 
     ToolbarItemFactory.register({

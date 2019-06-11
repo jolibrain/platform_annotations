@@ -11,7 +11,16 @@ import * as path from 'path';
  * @member containerName - remote url
  */
 export interface IWebAutoIndexJsonOptions {
-    containerName: string;
+  containerName: string;
+  modelType: WebAutoIndexModelType;
+}
+
+/*
+ * Model type
+ */
+export enum WebAutoIndexModelType {
+    Classification = "Classification",
+    Detection = "Detection"
 }
 
 /**

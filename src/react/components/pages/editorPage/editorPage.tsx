@@ -528,6 +528,9 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                     editorMode: EditorMode.Polygon,
                 });
                 break;
+            case ToolbarItemName.DrawFullFrame:
+                this.canvas.current.drawFullFrame();
+                break;
             case ToolbarItemName.CopyRectangle:
                 this.setState({
                     selectionMode: SelectionMode.COPYRECT,

@@ -6,6 +6,19 @@
         "containerName": {
             "type": "string",
             "title": "${strings.connections.providers.webAutoindex.containerName}"
+        },
+        "modeltype": {
+            "type": "string",
+            "title": "${strings.connections.providers.webAutoIndex.modelType.title}",
+            "enum": [
+                "classification",
+                "detection"
+            ],
+            "default": "classification",
+            "enumNames": [
+                "${strings.connections.providers.webAutoIndex.modelType.classification}",
+                "${strings.connections.providers.webAutoIndex.modelType.detection}"
+            ]
         }
     }
 }

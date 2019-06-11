@@ -1,7 +1,8 @@
 import React, { Fragment, ReactElement } from "react";
 import * as shortid from "shortid";
 import { CanvasTools } from "vott-ct";
-import { RegionData } from "vott-ct/lib/js/CanvasTools/Core/RegionData";
+import { RegionDataType, RegionData } from "vott-ct/lib/js/CanvasTools/Core/RegionData";
+import { Point2D } from "vott-ct/lib/js/CanvasTools/Core/Point2D";
 import {
     EditorMode, IAssetMetadata,
     IProject, IRegion, RegionType,
@@ -169,6 +170,21 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
             this.props.onSelectedRegionsChanged(selectedRegions);
         }
     }
+
+    public drawFullFrame = async () => {
+        const origin = { x: 0, y: 0 }
+        const { size } = this.state.currentAsset.asset;
+        const fullFrameRegion = new RegionData(origin.x, origin.y, size.width, size.height,
+            [
+                new Point2D(origin.x, origin.y), // Top left
+                new Point2D(origin.x + size.width, origin.y), // Top Right
+                new Point2D(origin.x, origin.y + size.height), // Bottom Left
+                new Point2D(origin.x + size.width, origin.y + size.height), // Bottom Right
+            ],
+            RegionDataType.Rect);
+        this.addRegions([CanvasHelpers.fromRegionData(fullFrameRegion, RegionType.Rectangle)]);
+    }
+
 
     public copyRegions = async () => {
         await Clipboard.writeObject(this.getSelectedRegions());
