@@ -25,7 +25,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      */
     public storageType: StorageType = StorageType.Cloud;
 
-  private readPath: string = "/data";
+  private readPath: string = "/json/data";
   private writePath: string = "/filebrowser/api/resource";
 
     constructor(private options: IWebAutoIndexJsonOptions) {
