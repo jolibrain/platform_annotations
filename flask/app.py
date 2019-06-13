@@ -11,7 +11,6 @@ def hello():
 
 @app.route('/classification_task', methods=['POST'])
 def classification_task():
-    return request.form['vott']
     data = request.data
     dataDict = json.loads(data)
     for item in dataDict['items']:

@@ -152,6 +152,7 @@ export default class ProjectService implements IProjectService {
         const storageProvider = StorageProviderFactory.createFromConnection(project.targetConnection);
         await this.saveExportSettings(project);
         project = encryptProject(project, securityToken);
+        debugger;
 
         const projectItems = [];
 
