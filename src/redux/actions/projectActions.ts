@@ -24,7 +24,7 @@ import { IVottJsonExportProviderOptions } from "../../providers/export/vottJson"
 export default interface IProjectActions {
     loadProject(project: IProject): Promise<IProject>;
     saveProject(project: IProject): Promise<IProject>;
-    saveDeepDetect(project: IProject): Promise<IProject>;
+    saveDeepDetect(project: IProject): Promise<IExportResults>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     exportProject(project: IProject): Promise<void> | Promise<IExportResults>;
@@ -95,31 +95,23 @@ export function saveProject(project: IProject)
  * Dispatches Save DeepDetect action and resolves with IProject
  * @param project - Project to save
  */
-export function saveDeepDetect(project: IProject)
-    : (dispatch: Dispatch, getState: () => IApplicationState) => Promise<IProject> {
-    return async (dispatch: Dispatch, getState: () => IApplicationState) => {
-        const appState = getState();
-        const projectService = new ProjectService();
-
-        if (projectService.isDuplicate(project, appState.recentProjects)) {
-            throw new AppError(ErrorCode.ProjectDuplicateName, `Project with name '${project.name}
-                already exists with the same target connection '${project.targetConnection.name}'`);
+export function saveDeepDetect(project: IProject): (dispatch: Dispatch) => Promise<IExportResults> {
+    return async (dispatch: Dispatch) => {
+        if (!project.exportFormat) {
+            throw new AppError(ErrorCode.ExportFormatNotFound, strings.errors.exportFormatNotFound.message);
         }
 
-        const projectToken = appState.appSettings.securityTokens
-            .find((securityToken) => securityToken.name === project.securityToken);
+        if (project.exportFormat && project.exportFormat.providerType) {
+            const exportProvider = ExportProviderFactory.create(
+                project.exportFormat.providerType,
+                project,
+                project.exportFormat.providerOptions);
 
-        if (!projectToken) {
-            throw new AppError(ErrorCode.SecurityTokenNotFound, "Security Token Not Found");
+            const results = await exportProvider.export();
+            dispatch(exportProjectAction(project));
+
+            return results as IExportResults;
         }
-
-        const savedProject = await projectService.saveDeepDetect(project, projectToken);
-        dispatch(saveDeepDetectAction(savedProject));
-
-        // Reload project after save actions
-        await loadProject(savedProject)(dispatch, getState);
-
-        return savedProject;
     };
 }
 

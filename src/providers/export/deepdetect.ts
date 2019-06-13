@@ -56,4 +56,30 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
           JSON.stringify(exportObject, null, 4)
         );
     }
+
+    public async exportClassification(): Promise<void> {
+        const results = await this.getAssetsForExport();
+
+        const exportObject = { ...this.project };
+        exportObject.assets = _.keyBy(results, (assetMetadata) => assetMetadata.asset.id) as any;
+
+        // We don't need these fields in the export JSON
+        delete exportObject.sourceConnection;
+        delete exportObject.targetConnection;
+        delete exportObject.exportFormat;
+
+        const fileName = `${this.project.name.replace(/\s/g, "-")}${constants.exportFileExtension}`;
+        const resultPostJson = await axios.post(
+          this.options.filebrowserPath + fileName,
+          JSON.stringify(exportObject, null, 4)
+        );
+        const projectItems = [];
+        const response = await axios.post(
+          `/annotation_tasks/classification_task`,
+          {
+            targetDir: this.options.containerName,
+            items: projectItems
+          }
+        );
+    }
 }

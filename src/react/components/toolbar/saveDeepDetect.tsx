@@ -7,11 +7,15 @@ import { toast } from "react-toastify";
  */
 export class SaveDeepDetect extends ToolbarItem {
     protected onItemClick = async () => {
-        try {
-            await this.props.actions.saveDeepDetect(this.props.project);
-            toast.success(`${this.props.project.name} saved successfully on DeepDetect platform!`);
-        } catch (e) {
-            toast.error(`Error saving ${this.props.project.name}`);
+        const infoId = toast.info(`Started export for ${this.props.project.name}...`, { autoClose: false });
+        const results = await this.props.actions.saveDeepDetect(this.props.project);
+
+        toast.dismiss(infoId);
+
+        if (!results || (results && results.errors.length === 0)) {
+            toast.success(`Export completed successfully!`);
+        } else if (results && results.errors.length > 0) {
+            toast.warn(`Successfully exported ${results.completed.length}/${results.count} assets`);
         }
     }
 }
