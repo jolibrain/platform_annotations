@@ -18,7 +18,7 @@ def classification_task():
         destPath = os.path.join(dataDict['targetDir'], '/train', item['class'])
         try:
             os.mkdir(destPath
-        except:
+        except Exception:
             pass
         shutil.copy(item['filename'], os.path.join(destPath, item['filename']))
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
