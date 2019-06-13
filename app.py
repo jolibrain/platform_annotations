@@ -28,6 +28,3 @@ def detection_task():
     data = request.data
     dataDict = json.loads(data)
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
-
-if __name == '__main__':
-    app.run(debug=True, host='0.0.0.0')
