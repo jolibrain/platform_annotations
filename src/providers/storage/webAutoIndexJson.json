@@ -9,15 +9,15 @@
         },
         "modeltype": {
             "type": "string",
-            "title": "${strings.connections.providers.webAutoIndex.modelType.title}",
+            "title": "${strings.connections.providers.webAutoindex.modelType.title}",
             "enum": [
                 "classification",
                 "detection"
             ],
             "default": "classification",
             "enumNames": [
-                "${strings.connections.providers.webAutoIndex.modelType.classification}",
-                "${strings.connections.providers.webAutoIndex.modelType.detection}"
+                "${strings.connections.providers.webAutoindex.modelType.classification}",
+                "${strings.connections.providers.webAutoindex.modelType.detection}"
             ]
         }
     }
