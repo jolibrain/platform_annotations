@@ -31,55 +31,22 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
      */
     public async export(): Promise<void> {
         const results = await this.getAssetsForExport();
-
-        if (this.options.includeImages) {
-            await results.forEachAsync(async (assetMetadata) => {
-                const arrayBuffer = await HtmlFileReader.getAssetArray(assetMetadata.asset);
-                await axios.post(
-                  this.options.filebrowserPath + assetMetadata.asset.name,
-                  Buffer.from(arrayBuffer)
-                );
-            });
-        }
-
-        const exportObject = { ...this.project };
-        exportObject.assets = _.keyBy(results, (assetMetadata) => assetMetadata.asset.id) as any;
-
-        // We don't need these fields in the export JSON
-        delete exportObject.sourceConnection;
-        delete exportObject.targetConnection;
-        delete exportObject.exportFormat;
-
-        const fileName = `${this.project.name.replace(/\s/g, "-")}${constants.exportFileExtension}`;
-        const resultPostJson = await axios.post(
-          this.options.filebrowserPath + fileName,
-          JSON.stringify(exportObject, null, 4)
-        );
-    }
-
-    public async exportClassification(): Promise<void> {
-        const results = await this.getAssetsForExport();
-
-        const exportObject = { ...this.project };
-        exportObject.assets = _.keyBy(results, (assetMetadata) => assetMetadata.asset.id) as any;
-
-        // We don't need these fields in the export JSON
-        delete exportObject.sourceConnection;
-        delete exportObject.targetConnection;
-        delete exportObject.exportFormat;
-
-        const fileName = `${this.project.name.replace(/\s/g, "-")}${constants.exportFileExtension}`;
-        const resultPostJson = await axios.post(
-          this.options.filebrowserPath + fileName,
-          JSON.stringify(exportObject, null, 4)
-        );
-        const projectItems = [];
+        const options = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
+        const exportUrl = `annotation_tasks/${options.modeltype}_task`;
+        const projectItems = results.map(r => {
+          const region = r.regions[0];
+          return {
+            filename: r.asset.name,
+            classname: region && region.tags.length > 0 ? region.tags[0] : "no_tag"
+          }
+        });
         const response = await axios.post(
-          `/annotation_tasks/classification_task`,
+          exportUrl,
           {
-            targetDir: this.options.containerName,
+            targetDir: options.containerName,
             items: projectItems
           }
         );
     }
+
 }

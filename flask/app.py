@@ -14,7 +14,7 @@ def classification_task():
     data = request.data
     dataDict = json.loads(data)
     for item in dataDict['items']:
-        destPath = os.path.join(dataDict['targetDir'], '/train', item['class'])
+        destPath = os.path.join(dataDict['targetDir'], '/train', item['classname'])
         try:
             os.mkdir(destPath)
         except:
