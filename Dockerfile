@@ -11,3 +11,15 @@ RUN set -ex; \
 FROM nginx:alpine
 WORKDIR /usr/share/nginx/html
 COPY --from=0 /usr/src/app/build/ /usr/share/nginx/html
+
+FROM ubuntu:16.04
+RUN apt-get update -y && \
+    apt-get install -y python-pip python-dev
+
+# We copy just the requirements.txt first to leverage Docker cache
+COPY ./requirements.txt /app/requirements.txt
+WORKDIR /app
+RUN pip install -r requirements.txt
+COPY . /app
+ENTRYPOINT [ "python" ]
+CMD [ "app.py" ]
