@@ -182,7 +182,9 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
                 new Point2D(origin.x + size.width, origin.y + size.height), // Bottom Right
             ],
             RegionDataType.Rect);
-        this.addRegions([CanvasHelpers.fromRegionData(fullFrameRegion, RegionType.Rectangle)]);
+        const regions = [CanvasHelpers.fromRegionData(fullFrameRegion, RegionType.Rectangle)];
+        this.addRegions(regions);
+        this.updateRegions(regions);
     }
 
 
