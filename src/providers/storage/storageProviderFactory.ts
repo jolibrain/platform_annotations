@@ -15,6 +15,7 @@ import getHostProcess, { HostProcessType } from "../../common/hostProcess";
  * @member listContainers - List containers in storage provider
  * @member createContainer - Create container within storage provider
  * @member deleteContainer - Delete a container from a storage provider
+ * @member taskRequest - Make a request to deepdetect platform annotation tool
  */
 export interface IStorageProvider extends IAssetProvider {
 
@@ -32,6 +33,8 @@ export interface IStorageProvider extends IAssetProvider {
 
     createContainer(folderPath: string): Promise<void>;
     deleteContainer(folderPath: string): Promise<void>;
+
+    taskRequest(projectItems: string[]): Promise<void>;
 }
 
 /**

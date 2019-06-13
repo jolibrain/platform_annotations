@@ -241,6 +241,7 @@ export const english: IAppStrings = {
             previousAsset: "Previous Asset",
             nextAsset: "Next Asset",
             saveProject: "Save Project",
+            saveDeepDetect: "Save on DeepDetect Platform",
             exportProject: "Export Project",
             activeLearning: "Active Learning",
         },

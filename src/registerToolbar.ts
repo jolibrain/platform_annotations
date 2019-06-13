@@ -1,6 +1,7 @@
 import { ToolbarItemFactory } from "./providers/toolbar/toolbarItemFactory";
 import { ExportProject } from "./react/components/toolbar/exportProject";
 import { SaveProject } from "./react/components/toolbar/saveProject";
+import { SaveDeepDetect } from "./react/components/toolbar/saveDeepDetect";
 import { ToolbarItemType } from "./react/components/toolbar/toolbarItem";
 import { strings } from "./common/strings";
 
@@ -17,6 +18,7 @@ export enum ToolbarItemName {
     PreviousAsset = "navigatePreviousAsset",
     NextAsset = "navigateNextAsset",
     SaveProject = "saveProject",
+    SaveDeepDetect = "saveDeepDetect",
     ExportProject = "exportProject",
     ActiveLearning = "activeLearning",
 }
@@ -148,6 +150,14 @@ export default function registerToolbar() {
         type: ToolbarItemType.Action,
         accelerators: ["CmdOrCtrl+S", "CmdOrCtrl+s"],
     }, SaveProject);
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.SaveDeepDetect,
+        tooltip: strings.editorPage.toolbar.saveDeepDetect,
+        icon: "fa-share-square",
+        group: ToolbarItemGroup.Project,
+        type: ToolbarItemType.Action,
+    }, SaveDeepDetect);
 
     ToolbarItemFactory.register({
         name: ToolbarItemName.ExportProject,

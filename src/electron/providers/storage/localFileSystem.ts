@@ -193,4 +193,11 @@ export default class LocalFileSystem implements IStorageProvider {
             });
         });
     }
+
+    /**
+     * Task request
+     */
+    public async taskRequest(projectItems: string[]): Promise<void> {
+        throw new Error("Method taskRequest not implemented.");
+    }
 }

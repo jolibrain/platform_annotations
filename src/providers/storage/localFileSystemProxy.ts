@@ -129,4 +129,11 @@ export class LocalFileSystemProxy implements IStorageProvider, IAssetProvider {
         const folderPath = [this.options.folderPath, folderName].join("/");
         return IpcRendererProxy.send(`${PROXY_NAME}:getAssets`, [folderPath]);
     }
+
+    /**
+     * Task request
+     */
+    public async taskRequest(projectItems: string[]): Promise<void> {
+        throw new Error("Method taskRequest not implemented.");
+    }
 }

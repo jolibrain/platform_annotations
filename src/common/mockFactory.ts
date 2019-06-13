@@ -598,6 +598,7 @@ export default class MockFactory {
             createContainer: jest.fn(),
             deleteContainer: jest.fn(),
             getAssets: jest.fn(),
+            taskRequest: jest.fn(),
         };
     }
 
@@ -820,6 +821,7 @@ export default class MockFactory {
         return {
             loadProject: jest.fn(() => Promise.resolve()),
             saveProject: jest.fn(() => Promise.resolve()),
+            saveDeepDetect: jest.fn(() => Promise.resolve()),
             deleteProject: jest.fn(() => Promise.resolve()),
             closeProject: jest.fn(() => Promise.resolve()),
             loadAssets: jest.fn(() => Promise.resolve()),

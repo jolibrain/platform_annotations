@@ -121,6 +121,46 @@ export default class ProjectService implements IProjectService {
     }
 
     /**
+     * Save a project on deepdetect platform
+     * @param project - Project to save
+     * @param securityToken - Security Token to encrypt
+     */
+    public async saveDeepDetect(project: IProject, securityToken: ISecurityToken): Promise<IProject> {
+        Guard.null(project);
+
+        if (!project.id) {
+            project.id = shortid.generate();
+        }
+
+        // Ensure tags is always initialized to an array
+        if (!project.tags) {
+            project.tags = [];
+        }
+
+        // Initialize active learning settings if they don't exist
+        if (!project.activeLearningSettings) {
+            project.activeLearningSettings = defaultActiveLearningSettings;
+        }
+
+        // Initialize export settings if they don't exist
+        if (!project.exportFormat) {
+            project.exportFormat = defaultExportOptions;
+        }
+
+        project.version = packageJson.version;
+
+        const storageProvider = StorageProviderFactory.createFromConnection(project.targetConnection);
+        await this.saveExportSettings(project);
+        project = encryptProject(project, securityToken);
+
+        const projectItems = [];
+
+        await storageProvider.taskRequest(projectItems);
+
+        return project;
+    }
+
+    /**
      * Delete a project
      * @param project - Project to delete
      */

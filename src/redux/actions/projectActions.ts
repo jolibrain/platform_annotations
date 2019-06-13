@@ -24,6 +24,7 @@ import { IVottJsonExportProviderOptions } from "../../providers/export/vottJson"
 export default interface IProjectActions {
     loadProject(project: IProject): Promise<IProject>;
     saveProject(project: IProject): Promise<IProject>;
+    saveDeepDetect(project: IProject): Promise<IProject>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     exportProject(project: IProject): Promise<void> | Promise<IExportResults>;
@@ -82,6 +83,38 @@ export function saveProject(project: IProject)
 
         const savedProject = await projectService.save(project, projectToken);
         dispatch(saveProjectAction(savedProject));
+
+        // Reload project after save actions
+        await loadProject(savedProject)(dispatch, getState);
+
+        return savedProject;
+    };
+}
+
+/**
+ * Dispatches Save DeepDetect action and resolves with IProject
+ * @param project - Project to save
+ */
+export function saveDeepDetect(project: IProject)
+    : (dispatch: Dispatch, getState: () => IApplicationState) => Promise<IProject> {
+    return async (dispatch: Dispatch, getState: () => IApplicationState) => {
+        const appState = getState();
+        const projectService = new ProjectService();
+
+        if (projectService.isDuplicate(project, appState.recentProjects)) {
+            throw new AppError(ErrorCode.ProjectDuplicateName, `Project with name '${project.name}
+                already exists with the same target connection '${project.targetConnection.name}'`);
+        }
+
+        const projectToken = appState.appSettings.securityTokens
+            .find((securityToken) => securityToken.name === project.securityToken);
+
+        if (!projectToken) {
+            throw new AppError(ErrorCode.SecurityTokenNotFound, "Security Token Not Found");
+        }
+
+        const savedProject = await projectService.saveDeepDetect(project, projectToken);
+        dispatch(saveDeepDetectAction(savedProject));
 
         // Reload project after save actions
         await loadProject(savedProject)(dispatch, getState);
@@ -281,6 +314,13 @@ export interface ISaveProjectAction extends IPayloadAction<string, IProject> {
 }
 
 /**
+ * Save deepdetect action type
+ */
+export interface ISaveDeepDetectAction extends IPayloadAction<string, IProject> {
+    type: ActionTypes.SAVE_DEEPDETECT_SUCCESS;
+}
+
+/**
  * Delete project action type
  */
 export interface IDeleteProjectAction extends IPayloadAction<string, IProject> {
@@ -341,6 +381,10 @@ export const closeProjectAction = createAction<ICloseProjectAction>(ActionTypes.
  * Instance of Save Project action
  */
 export const saveProjectAction = createPayloadAction<ISaveProjectAction>(ActionTypes.SAVE_PROJECT_SUCCESS);
+/**
+ * Instance of Save DeepDetect action
+ */
+export const saveDeepDetectAction = createPayloadAction<ISaveDeepDetectAction>(ActionTypes.SAVE_DEEPDETECT_SUCCESS);
 /**
  * Instance of Delete Project action
  */

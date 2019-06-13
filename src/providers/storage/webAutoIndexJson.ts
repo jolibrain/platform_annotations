@@ -157,4 +157,13 @@ export class WebAutoIndexJson implements IAssetProvider {
       .filter((asset) => asset.type !== AssetType.Unknown);
     }
 
+		public async taskRequest(projectItems = []) {
+      const response = await axios.post(
+				`/annotations_tool/${this.options.modelType}`,
+				{
+					targetDir: this.options.containerName,
+					items: projectItems
+				}
+			)
+		}
 }

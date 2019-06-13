@@ -240,6 +240,7 @@ export interface IAppStrings {
             previousAsset: string;
             nextAsset: string;
             saveProject: string;
+            saveDeepDetect: string;
             exportProject: string;
             activeLearning: string;
         }

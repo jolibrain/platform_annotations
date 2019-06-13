@@ -243,6 +243,7 @@ export const spanish: IAppStrings = {
             previousAsset: "Activo anterior",
             nextAsset: "Siguiente activo",
             saveProject: "Guardar Proyecto",
+            saveDeepDetect: "Guardar en DeepDetect Platform",
             exportProject: "Exprtar Proyecto",
             activeLearning: "Aprendizaje Activo",
         },
