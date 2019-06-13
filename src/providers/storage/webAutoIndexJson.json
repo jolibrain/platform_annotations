@@ -7,7 +7,7 @@
             "type": "string",
             "title": "${strings.connections.providers.webAutoindex.containerName}"
         },
-        "modeltype": {
+        "modelType": {
             "type": "string",
             "title": "${strings.connections.providers.webAutoindex.modelType.title}",
             "enum": [
