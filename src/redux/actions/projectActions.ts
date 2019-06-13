@@ -103,7 +103,7 @@ export function saveDeepDetect(project: IProject): (dispatch: Dispatch) => Promi
 
         if (project.exportFormat && project.exportFormat.providerType) {
             const exportProvider = ExportProviderFactory.create(
-                project.exportFormat.providerType,
+                'deepdetect',
                 project,
                 project.exportFormat.providerOptions);
 
