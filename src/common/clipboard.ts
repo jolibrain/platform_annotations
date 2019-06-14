@@ -12,6 +12,9 @@ export default class Clipboard {
     }
 
     public static async readObject(): Promise<any> {
+        if(!Clipboard)
+          return null;
+
         return Clipboard.readText().then((text) => Promise.resolve(JSON.parse(text)));
     }
 }
