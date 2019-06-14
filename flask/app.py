@@ -17,17 +17,21 @@ def classification_task():
     data = request.data
     dataDict = json.loads(data)
 
-    filename = dataDict['item']['filename']
-    classname = dataDict['item']['classname']
+    filename = dataDict['item']['filename'].decode('utf-8')
+    classname = dataDict['item']['classname'].decode('utf-8')
 
-    destPath = os.path.join(rootPath, dataDict['targetDir'], 'train', classname)
+    srcPath = os.path.join(rootPath, dataDict['targetDir'])
+    destPath = os.path.join(srcPath, 'train', classname)
 
     try:
         os.mkdir(destPath)
     except:
         pass
 
-    shutil.copy(filename, os.path.join(destPath, filename))
+    shutil.copy(
+        os.path.join(srcPath, filename),
+        os.path.join(destPath, filename)
+    )
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
