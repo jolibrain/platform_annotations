@@ -99,7 +99,7 @@ def detection_task():
 
     # create bbox file
     basename, file_extension = os.path.splitext(filename)
-    with open(os.path.join(bboxPath, basename + '.txt', 'w') as f:
+    with open(os.path.join(bboxPath, basename + '.txt'), 'w') as f:
         for region in regions:
               f.write("%s $i %i %i %i\n" % (
                   region['class_number'],
