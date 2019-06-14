@@ -45,7 +45,6 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
           !this.options.regions[0] ||
           !this.options.regions[0].tags ||
           !this.options.regions[0].tags[0]
-          !['classification', 'detection'].includes(providerOptions.modelType)
         )
           return null;
 
