@@ -115,7 +115,6 @@ export class ObjectDetection {
         : Promise<IRegion[]> {
         const regions: IRegion[] = [];
 
-          console.log(image)
         const predictions = await this.detect(image);
         predictions.forEach((prediction) => {
             const left = Math.max(0, prediction.bbox[0] * xRatio);
@@ -167,7 +166,6 @@ export class ObjectDetection {
      *
      */
     public async detect(img: ImageObject, maxNumBoxes: number = 20): Promise<DetectedObject[]> {
-      console.log(img);
         if (this.model) {
             return this.infer(img, maxNumBoxes);
         } else if (this.deepdetect.service.length > 0) {
