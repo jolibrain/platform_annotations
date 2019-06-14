@@ -62,7 +62,7 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         return null;
 
       await axios.post(
-        'tasks/classificationr',
+        'tasks/classification',
         {
           targetDir: containerName,
           item:
