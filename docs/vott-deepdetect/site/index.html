@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>DeepDetect Annotation Tool</title>
+        <link href="css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap-3.0.3.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container">
+
+                <!-- Collapsed navigation -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href=".">DeepDetect Annotation Tool</a>
+                </div>
+
+                <!-- Expanded navigation -->
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+                <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="main active"><a href="#classification">Classification</a></li>
+            <li><a href="#create-connection">Create Connection</a></li>
+            <li><a href="#create-project">Create Project</a></li>
+            <li><a href="#tag-editor">Tag Editor</a></li>
+            <li><a href="#result-folder">Result Folder</a></li>
+        <li class="main "><a href="#detection">Detection</a></li>
+            <li><a href="#create-connection_1">Create Connection</a></li>
+            <li><a href="#create-project_1">Create Project</a></li>
+            <li><a href="#active-learning">Active Learning</a></li>
+            <li><a href="#tag-editor_1">Tag Editor</a></li>
+            <li><a href="#result-folder_1">Result Folder</a></li>
+    </ul>
+</div></div>
+                <div class="col-md-9" role="main">
+
+<h1 id="classification">Classification</h1>
+<p>DeepDetect Annotation Tool helps tagging images for a classification job.</p>
+<h2 id="create-connection">Create Connection</h2>
+<p>Visit DeepDetect Annotation Tool homepage:</p>
+<p><img alt="VoTT" src="img/vott_home.png" /></p>
+<p>Select the connections icons to visit Connection tab:</p>
+<p><img alt="VoTT - Select Connection" src="img/vott_home_select_connector.png" /></p>
+<p>You are now on Connection tab:</p>
+<p><img alt="VoTT Connection" src="img/vott_connector_home.png" /></p>
+<p>Now, click on the "+" icon to create a new connection:</p>
+<p><img alt="VoTT Connection - Select Add Connection" src="img/vott_connector_home_select_add.png" /></p>
+<p>This form appears, fill it to create a new connection:</p>
+<p><img alt="VoTT Connection Add" src="img/vott_add_connector.png" /></p>
+<p>You must select "DeepDetect Platform Storage" inside the Provider menu:</p>
+<p><img alt="VoTT Connection Add - Select Provider" src="img/vott_add_connector_select_provider.png" /></p>
+<p>You will find the following options for the DeepDetect Platform Storage provider:</p>
+<p><img alt="VoTT Connection Add - DeepDetect Platform Storage" src="img/vott_add_connector_deepdetect.png" /></p>
+<ul>
+<li><strong>Best Practive</strong> : you should name your connection with a reference to the data path you're using so it'll be easier to find the right connection when you'll be creating a new project.</li>
+<li><strong>Data Storage Location</strong> : where your images are stored on DeepDetect Platform. If your images are stored in <em>/opt/platform/data/client/images/</em>, you must fill <em>/client/images/</em> in this input;</li>
+<li><strong>Model Type</strong> : for a classification job, please select <em>classification</em> in this menu.</li>
+</ul>
+<h2 id="create-project">Create Project</h2>
+<p>If a DeepDetect Platform Storage connection is ready, you can now create a new Project.</p>
+<p>Visit <em>Annotation Tool</em> home and click on <em>New Project</em>:</p>
+<p><img alt="VoTT - Select New Project" src="img/vott_home_select_new_project.png" /></p>
+<p>This <em>New Project</em> form appears:</p>
+<p><img alt="VoTT New Project" src="img/vott_new_project.png" /></p>
+<p>Fill the details, and select the connection you've created before as Source and Target connection:</p>
+<p><img alt="VoTT New Project - Connections" src="img/vott_new_project_select_connector.png" /></p>
+<h2 id="tag-editor">Tag Editor</h2>
+<p>When the project has been created, the <em>Tag Editor</em> tab will be available, with images from the connection</p>
+<p><img alt="VoTT Tag Editor" src="img/vott_tag_editor.png" /></p>
+<p>Now you must create new Tags in the tag section of the page,  click on the "+" icon:</p>
+<p><img alt="VoTT Tag Editor - New Tags" src="img/vott_tag_editor_select_new_tag.png" /></p>
+<p>Here is an example of created tags:</p>
+<p><img alt="VoTT Tag Editor - Tags" src="img/vott_tag_editor_select_tags.png" /></p>
+<p>You can now tag each image from the Tag Editor.</p>
+<p>The workflow is optimised for fast keyboard manipulation:</p>
+<ol>
+<li>press key "F" to add a rectangle on the full image</li>
+<li>press the tag shortcut number to apply a tab on this rectangle. In our example, "1" for "Cat" and "2" for "dog"</li>
+<li>press down arrow key to navigate to the next image</li>
+</ol>
+<p><img alt="VoTT Tag Editor - Tagging" src="img/vott_tag_editor_tagging.png" /></p>
+<p><img alt="VoTT Tag Editor - Tagging" src="img/vott_tag_editor_tagging_bis.png" /></p>
+<h2 id="result-folder">Result Folder</h2>
+<p>Results are avaible on the DeepDetect Platform Filebrowser.</p>
+<p>You can navigate to your connection data path:</p>
+<p><img alt="Filebrowser - Connector Home" src="img/filebrowser_images.png" /></p>
+<p>You'll find a new "<strong>train</strong>" folder:</p>
+<p><img alt="Filebrowser - Select Train Folder" src="img/filebrowser_images_select_train.png" /></p>
+<p>Inside this train folder, you will find a folder for each tag, containing the images you've tagged from the Tag Editor.</p>
+<p><img alt="Filebrowser - Train Folder" src="img/filebrowser_images_train.png" /></p>
+<h1 id="detection">Detection</h1>
+<p>DeepDetect Annotation Tool helps tagging images for a detection job.</p>
+<h2 id="create-connection_1">Create Connection</h2>
+<p>Visit DeepDetect Annotation Tool homepage:</p>
+<p><img alt="VoTT" src="img/vott_home.png" /></p>
+<p>Select the connections icons to visit Connection tab:</p>
+<p><img alt="VoTT - Select Connection" src="img/vott_home_select_connector.png" /></p>
+<p>You are now on Connection tab:</p>
+<p><img alt="VoTT Connection" src="img/vott_connector_home.png" /></p>
+<p>Now, click on the "+" icon to create a new connection:</p>
+<p><img alt="VoTT Connection - Select Add Connection" src="img/vott_connector_home_select_add.png" /></p>
+<p>This form appears, fill it to create a new connection:</p>
+<p><img alt="VoTT Connection Add" src="img/vott_add_connector.png" /></p>
+<p>You must select "DeepDetect Platform Storage" inside the Provider menu:</p>
+<p><img alt="VoTT Connection Add - Select Provider" src="img/vott_add_connector_select_provider.png" /></p>
+<p>You will find the following options for the DeepDetect Platform Storage provider:</p>
+<p><img alt="VoTT Connection Add - DeepDetect Platform Storage" src="img/vott_add_connector_deepdetect.png" /></p>
+<ul>
+<li><strong>Best Practive</strong> : you should name your connection with a reference to the data path you're using so it'll be easier to find the right connection when you'll be creating a new project.</li>
+<li><strong>Data Storage Location</strong> : where your images are stored on DeepDetect Platform. If your images are stored in <em>/opt/platform/data/client/images/</em>, you must fill <em>/client/images/</em> in this input;</li>
+<li><strong>Model Type</strong> : for a classification job, please select <em>detection</em> in this menu.</li>
+</ul>
+<h2 id="create-project_1">Create Project</h2>
+<p><img alt="VoTT - Select New Project" src="img/vott_home_select_new_project.png" /></p>
+<p><img alt="VoTT New Project" src="img/vott_new_project.png" /></p>
+<p><img alt="VoTT New Project - Connections" src="img/vott_new_project_select_connector.png" /></p>
+<h2 id="active-learning">Active Learning</h2>
+<p>TBD</p>
+<h2 id="tag-editor_1">Tag Editor</h2>
+<p>When the project has been created, the <em>Tag Editor</em> tab will be available, with images from the connection</p>
+<p><img alt="VoTT Tag Editor" src="img/vott_tag_editor.png" /></p>
+<h2 id="result-folder_1">Result Folder</h2>
+<p>TBD</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"search": 83, "next": 78, "help": 191, "previous": 80};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="Keyboard Shortcuts Modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="exampleModalLabel">Keyboard Shortcuts</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.0.4
+Build Date UTC : 2019-06-14 13:11:37
+-->
