@@ -207,7 +207,7 @@ export const english: IAppStrings = {
             },
             webAutoindex: {
                 title: "DeepDetect Platform Storage",
-              containerName: "Data Storage Location - ex. if data stored in /opt/platform/data/client/images/ then input must be /client/images/",
+              containerName: "Data Storage Location - ex. if data stored in /opt/platform/data/client/images/ then input must be /client/images/ - required",
                 modelType: {
                   title: "Model type",
                   classification: "Classification",
