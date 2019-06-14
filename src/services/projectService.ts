@@ -112,10 +112,10 @@ export default class ProjectService implements IProjectService {
         await this.saveExportSettings(project);
         project = encryptProject(project, securityToken);
 
-      // await storageProvider.writeText(
-      //        `${project.name}${constants.projectFileExtension}`,
-      //        JSON.stringify(project, null, 4),
-      //    );
+        await storageProvider.writeText(
+            `${project.name}${constants.projectFileExtension}`,
+            JSON.stringify(project, null, 4),
+        );
 
         return project;
     }
