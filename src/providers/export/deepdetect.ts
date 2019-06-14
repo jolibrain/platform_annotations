@@ -37,28 +37,64 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         // it should be available by calling directly modelTayp attribute on providerOptions
         const providerOptions = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
 
-        if(
-          !this.options ||
-          !this.options.asset ||
-          !this.options.asset.name ||
-          !this.options.regions ||
-          !this.options.regions[0] ||
-          !this.options.regions[0].tags ||
-          !this.options.regions[0].tags[0]
-        )
-          return null;
+        switch(providerOptions.modelType) {
+          case 'classification':
+            this.exportClassification(providerOptions.containerName, this.options);
+            break;
+          case 'detection':
+            this.exportDetection(providerOptions.containerName, this.options);
+            break;
+          default:
+            break;
+        }
+    }
 
-        const response = await axios.post(
-          `annotation_tasks/${providerOptions.modelType}_task`,
-          {
-            targetDir: providerOptions.containerName,
-            item:
-              {
-                filename: this.options.asset.name,
-                classname: this.options.regions[0].tags[0]
-              }
-          }
-        );
+    private async exportClassification(containerName, options): Promise<void> {
+      if(
+        !options ||
+        !options.asset ||
+        !options.asset.name ||
+        !options.regions ||
+        !options.regions[0] ||
+        !options.regions[0].tags ||
+        !options.regions[0].tags[0]
+      )
+        return null;
+
+      await axios.post(
+        'tasks/classificationr',
+        {
+          targetDir: containerName,
+          item:
+            {
+              filename: options.asset.name,
+              classname: options.regions[0].tags[0]
+            }
+        }
+      );
+    }
+
+    private async exportDetection(containerName, options): Promise<void> {
+      if(
+        !options ||
+        !options.asset ||
+        !options.asset.name ||
+        !options.regions ||
+        options.regions.length === 0
+      )
+        return null;
+
+      await axios.post(
+        'tasks/detection',
+        {
+          targetDir: containerName,
+          item:
+            {
+              filename: options.asset.name,
+              regions: options.regions
+            }
+        }
+      );
     }
 
 }
