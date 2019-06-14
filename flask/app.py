@@ -11,15 +11,24 @@ def hello():
 
 @app.route('/classification_task', methods=['POST'])
 def classification_task():
+
+    rootPath = '/opt/platform/data/'
+
     data = request.data
     dataDict = json.loads(data)
-    for item in dataDict['items']:
-        destPath = os.path.join(dataDict['targetDir'], '/train', item['classname'])
-        try:
-            os.mkdir(destPath)
-        except:
-            pass
-        shutil.copy(item['filename'], os.path.join(destPath, item['filename']))
+
+    filename = dataDict['item']['filename']
+    classname = dataDict['item']['classname']
+
+    destPath = os.path.join(rootPath, dataDict['targetDir'], 'train', classname)
+
+    try:
+        os.mkdir(destPath)
+    except:
+        pass
+
+    shutil.copy(filename, os.path.join(destPath, filename))
+
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 @app.route('/detection_task', methods=['POST'])

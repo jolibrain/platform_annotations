@@ -32,22 +32,32 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
      * Export project to VoTT JSON format
      */
     public async export(): Promise<void> {
-        const results = await this.getAssetsForExport();
+
+        // FIXME: hack to fetch modelType
+        // it should be available by calling directly modelTayp attribute on providerOptions
         const providerOptions = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
 
-        const exportUrl = `annotation_tasks/${providerOptions.modeltype}_task`;
-        const projectItems = [
-          {
-            filename: this.options.asset.name,
-            classname: this.options.regions[0].tags[0]
-          }
-        ];
+        if(
+          !this.options ||
+          !this.options.asset ||
+          !this.options.asset.name ||
+          !this.options.regions ||
+          !this.options.regions[0] ||
+          !this.options.regions[0].tags ||
+          !this.options.regions[0].tags[0]
+          !['classification', 'detection'].includes(providerOptions.modelType)
+        )
+          return null;
 
         const response = await axios.post(
-          exportUrl,
+          `annotation_tasks/${providerOptions.modelType}_task`,
           {
             targetDir: providerOptions.containerName,
-            items: projectItems
+            item:
+              {
+                filename: this.options.asset.name,
+                classname: this.options.regions[0].tags[0]
+              }
           }
         );
     }
