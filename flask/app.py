@@ -9,7 +9,7 @@ app = Flask(__name__)
 def hello():
     return "Annotation tool"
 
-@app.route('/classification_task', methods=['POST'])
+@app.route('/classification', methods=['POST'])
 def classification_task():
 
     rootPath = '/opt/platform/data/'
@@ -31,7 +31,7 @@ def classification_task():
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
-@app.route('/detection_task', methods=['POST'])
+@app.route('/detection', methods=['POST'])
 def detection_task():
     data = request.data
     dataDict = json.loads(data)
