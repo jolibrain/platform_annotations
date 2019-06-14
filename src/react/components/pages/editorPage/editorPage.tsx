@@ -468,6 +468,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
         }
 
         await this.props.actions.saveProject(this.props.project);
+        await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
 
         const assetService = new AssetService(this.props.project);
         const childAssets = assetService.getChildAssets(rootAsset);

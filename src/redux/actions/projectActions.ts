@@ -24,7 +24,7 @@ import { IVottJsonExportProviderOptions } from "../../providers/export/vottJson"
 export default interface IProjectActions {
     loadProject(project: IProject): Promise<IProject>;
     saveProject(project: IProject): Promise<IProject>;
-    saveDeepDetect(project: IProject): Promise<IExportResults>;
+    saveDeepDetect(project: IProject, assetMetadata: IAssetMetadata): Promise<IExportResults>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     exportProject(project: IProject): Promise<void> | Promise<IExportResults>;
@@ -95,7 +95,7 @@ export function saveProject(project: IProject)
  * Dispatches Save DeepDetect action and resolves with IProject
  * @param project - Project to save
  */
-export function saveDeepDetect(project: IProject): (dispatch: Dispatch) => Promise<IExportResults> {
+export function saveDeepDetect(project: IProject, assetMetadata: IAssetMetadata): (dispatch: Dispatch) => Promise<IExportResults> {
     return async (dispatch: Dispatch) => {
         if (!project.exportFormat) {
             throw new AppError(ErrorCode.ExportFormatNotFound, strings.errors.exportFormatNotFound.message);
@@ -105,7 +105,7 @@ export function saveDeepDetect(project: IProject): (dispatch: Dispatch) => Promi
             const exportProvider = ExportProviderFactory.create(
                 'deepdetect',
                 project,
-                project.exportFormat.providerOptions);
+                Object.assign(project.exportFormat.providerOptions, assetMetadata));
 
             const results = await exportProvider.export();
             dispatch(exportProjectAction(project));
@@ -306,13 +306,6 @@ export interface ISaveProjectAction extends IPayloadAction<string, IProject> {
 }
 
 /**
- * Save deepdetect action type
- */
-export interface ISaveDeepDetectAction extends IPayloadAction<string, IProject> {
-    type: ActionTypes.SAVE_DEEPDETECT_SUCCESS;
-}
-
-/**
  * Delete project action type
  */
 export interface IDeleteProjectAction extends IPayloadAction<string, IProject> {
@@ -373,10 +366,6 @@ export const closeProjectAction = createAction<ICloseProjectAction>(ActionTypes.
  * Instance of Save Project action
  */
 export const saveProjectAction = createPayloadAction<ISaveProjectAction>(ActionTypes.SAVE_PROJECT_SUCCESS);
-/**
- * Instance of Save DeepDetect action
- */
-export const saveDeepDetectAction = createPayloadAction<ISaveDeepDetectAction>(ActionTypes.SAVE_DEEPDETECT_SUCCESS);
 /**
  * Instance of Delete Project action
  */

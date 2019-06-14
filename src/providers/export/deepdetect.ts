@@ -13,7 +13,9 @@ export interface IDeepdetectExportProviderOptions extends IExportProviderOptions
     /** Filebrowser path */
     filebrowserPath: string;
     /** Whether or not to include binary assets in target connection */
-    includeImages: boolean;
+  includeImages: boolean;
+  asset: any;
+  regions: any[];
 }
 
 /**
@@ -31,19 +33,20 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
      */
     public async export(): Promise<void> {
         const results = await this.getAssetsForExport();
-        const options = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
-        const exportUrl = `annotation_tasks/${options.modeltype}_task`;
-        const projectItems = results.map(r => {
-          const region = r.regions[0];
-          return {
-            filename: r.asset.name,
-            classname: region && region.tags.length > 0 ? region.tags[0] : "no_tag"
+        const providerOptions = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
+
+        const exportUrl = `annotation_tasks/${providerOptions.modeltype}_task`;
+        const projectItems = [
+          {
+            filename: this.options.asset.name,
+            classname: this.options.regions[0].tags[0]
           }
-        });
+        ];
+
         const response = await axios.post(
           exportUrl,
           {
-            targetDir: options.containerName,
+            targetDir: providerOptions.containerName,
             items: projectItems
           }
         );
