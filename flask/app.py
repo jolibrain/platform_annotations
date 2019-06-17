@@ -132,9 +132,8 @@ def detection_task():
     classDescriptionFile = os.path.join(srcPath, 'deepdetect_classes.txt')
 
     # File doesn't exist, create it
-    if os.path.isfile(classDescriptionFile) == False:
-        with open(classDescriptionFile, 'a'):
-            os.utime(classDescriptionFile, times)
+    if os.path.exists(classDescriptionFile):
+        os.utime(classDescriptionFile, None)
 
     # Get existing classes from class description file
     classDescriptions = [line.rstrip() for line in open(classDescriptionFile)]
