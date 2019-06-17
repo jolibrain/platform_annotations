@@ -24,3 +24,16 @@
     flex-grow: 1;
   }
 }
+
+.toolbar-btn.deepdetectPredict,
+.toolbar-btn.deepdetectValidate,
+.toolbar-btn.deepdetectNext {
+  width:auto;
+  height:auto;
+  display:flex;
+
+  i {
+    margin-right: 5px;
+    padding-top: 2px;
+  }
+}
