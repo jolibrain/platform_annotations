@@ -134,7 +134,7 @@ def detection_task():
     # File doesn't exist, create it
     if os.path.isfile(classDescriptionFile) == False:
         with open(classDescriptionFile, 'a'):
-            os.utime(fname, times)
+            os.utime(classDescriptionFile, times)
 
     f = open(classDescriptionFile, 'r')
     classDescriptions = f.readlines()
