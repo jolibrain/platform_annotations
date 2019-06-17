@@ -12,7 +12,22 @@ def hello():
 
 @app.route('/classification', methods=['POST'])
 def classification_task():
+    """
+    Classification task
 
+    Receive HTTP POST request to move an image file to a train folder
+
+    params:
+        * targetDir: folder where the file is stored on DeepDetect Platform
+            If file is stored in /opt/platform/data/client/images/ then this
+            parameter is equal to */client/images/*
+        * item: image file to process
+            * filename: image filename
+            * classname: class associated to this image, this classname will
+                determine where the image will be moved. If classname is *dog*,
+                then */opt/platform/data/client/images/img,jpg* will be moved
+                to */opt/platform/data/client/images/train/dog/img.jpg*
+    """
     data = request.data
     dataDict = json.loads(data)
 
@@ -40,6 +55,46 @@ def classification_task():
 
 @app.route('/detection', methods=['POST'])
 def detection_task():
+    """
+    Detection task
+
+    Receive HTTP POST request to create training files for detection purpose.
+
+    params:
+        * targetDir: folder where the file is stored on DeepDetect Platform
+            If file is stored in /opt/platform/data/client/images/ then this
+            parameter is equal to */client/images/*
+        * item: image file to process
+            * filename: image filename
+            * regions: array of regions on the image with various classnames
+                * region:
+                    * classname: class associated with this region
+                    * xmin, ymin, xmax, ymax: coodonates of this region
+
+    A *deepdetect_classes.txt* file will be created to store the region
+    classname indexes in order to have the same index for each region classname
+    in each image training file.
+
+    When process, each image item will copy itself in *detection/img/[item.filename]*
+    and create a new *detection/bbox/[item.filename].txt* file used in training
+    with the following format:
+
+        class_idx xmin ymin xmax ymax
+
+    For example, if there is a *dog* region in *client/images/dog.jpg* file with
+    the following coordonates [xmin: 0, ymin: 0, xmax: 100, ymax: 100}
+
+    * *client/images/detection/deepdetect_classes.txt* will be created, with the
+        following content:
+
+    dog
+
+    * image file will be copied to *client/images/detection/img/dog.jpg*
+    * txt training file will be created in *client/images/detection/bbox/dog.txt*
+        with the following content:
+
+    1 0 0 100 100
+    """
     data = request.data
     dataDict = json.loads(data)
 
