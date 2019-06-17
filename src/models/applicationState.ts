@@ -196,9 +196,11 @@ export interface IExportFormat {
  * @name - Video Tagging Settings for the project
  * @description - Defines the video settings within a VoTT project
  * @member frameExtractionRate - Extraction rate for a video (number of frames per second of video)
+ * @member nextFrame - Modify this number to force player to display next frame
  */
 export interface IProjectVideoSettings {
     frameExtractionRate: number;
+    nextFrame?: number;
 }
 
 /**

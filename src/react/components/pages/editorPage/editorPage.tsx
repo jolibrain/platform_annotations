@@ -225,7 +225,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                                         lockedTags={this.state.lockedTags}>
                                         <AssetPreview
                                             additionalSettings={this.state.additionalSettings}
-                                            autoPlay={true}
+                                            autoPlay={false}
                                             controlsEnabled={this.state.isValid}
                                             onBeforeAssetChanged={this.onBeforeAssetSelected}
                                             onChildAssetSelected={this.onChildAssetSelected}
@@ -468,7 +468,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
         }
 
         await this.props.actions.saveProject(this.props.project);
-        await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
+      //await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
 
         const assetService = new AssetService(this.props.project);
         const childAssets = assetService.getChildAssets(rootAsset);
@@ -563,9 +563,14 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                 this.canvas.current.confirmRemoveAllRegions();
                 break;
             case ToolbarItemName.ActiveLearning:
+            case ToolbarItemName.DeepDetectPredict:
                 await this.predictRegions();
                 break;
-            case ToolbarItemName.ExportDeepDetect:
+            case ToolbarItemName.DeepDetectValidate:
+                await this.saveAssetToDeepDetect();
+                break;
+            case ToolbarItemName.DeepDetectNext:
+                await this.goToNextResource();
                 break;
         }
     }
@@ -616,6 +621,43 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             await this.selectAsset(this.state.assets[Math.min(this.state.assets.length - 1, currentIndex + 1)]);
         } else {
             await this.selectAsset(this.state.assets[Math.max(0, currentIndex - 1)]);
+        }
+    }
+
+    private goToNextResource = async () => {
+        const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+
+        switch(selectedRootAsset.type) {
+          case AssetType.Image:
+            this.goToRootAsset(1)
+            break;
+          case AssetType.Video:
+            this.setState(state => {
+              state.additionalSettings.videoSettings.nextFrame = (new Date).getTime()
+              return state
+            })
+            break;
+          default:
+            break;
+        }
+    }
+
+    private saveAssetToDeepDetect = async () => {
+        const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+
+        switch(selectedRootAsset.type) {
+          case AssetType.Image:
+            const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
+            await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
+            break;
+          case AssetType.Video:
+            this.setState(state => {
+              state.additionalSettings.videoSettings.nextFrame = (new Date).getTime()
+              return state
+            })
+            break;
+          default:
+            break;
         }
     }
 

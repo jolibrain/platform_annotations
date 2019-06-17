@@ -84,6 +84,7 @@ export class AssetService {
             case "m4v":
             case "mpg":
             case "wmv":
+            case "mkv":
                 return AssetType.Video;
             case "tfrecord":
                 return AssetType.TFRecord;
