@@ -158,12 +158,5 @@ export class WebAutoIndexJson implements IAssetProvider {
     }
 
 		public async taskRequest(projectItems: string[]) {
-      const response = await axios.post(
-				`/annotation_tasks/${this.options.modelType}_task`,
-				{
-					targetDir: this.options.containerName,
-					items: projectItems
-				}
-			)
 		}
 }
