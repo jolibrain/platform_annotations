@@ -156,7 +156,7 @@ def detection_task():
     basename, file_extension = os.path.splitext(filename)
     with open(os.path.join(bboxPath, basename + '.txt'), 'w') as f:
         for region in regions:
-              f.write("{0} {1} {2} {3} {4} {5}\n".format(
+              f.write("{0} {1} {2} {3} {4}\n".format(
                   int(region['class_number']),
                   int(region['xmin']),
                   int(region['ymin']),
