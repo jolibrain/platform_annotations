@@ -96,8 +96,8 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
                   classname: r.tags[0],
                   xmin: parseInt(r.points[0].x),
                   ymin: parseInt(r.points[0].y),
-                  xmax: parseInt(r.points[3].x),
-                  ymax: parseInt(r.points[3].y)
+                  xmax: parseInt(r.points[2].x),
+                  ymax: parseInt(r.points[2].y)
                 }
               })
             }
