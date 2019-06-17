@@ -46,12 +46,16 @@ def classification_task():
         else:
             raise
 
-    shutil.copy(
-        os.path.join(srcPath, filename),
-        os.path.join(dstPath, filename)
-    )
+    if os.path.exists(os.path.join(srcPath, filename)):
+        shutil.copy(
+            os.path.join(srcPath, filename),
+            os.path.join(dstPath, filename)
+        )
 
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+    else:
+        # Source file doesn't exist
+        return json.dumps({'success':False}), 200, {'ContentType':'application/json'}
 
 @app.route('/detection', methods=['POST'])
 def detection_task():
