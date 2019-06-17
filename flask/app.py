@@ -136,9 +136,8 @@ def detection_task():
         with open(classDescriptionFile, 'a'):
             os.utime(classDescriptionFile, times)
 
-    f = open(classDescriptionFile, 'r')
-    classDescriptions = f.readlines()
-    f.close()
+    # Get existing classes from class description file
+    classDescriptions = [line.rstrip() for line in open(classDescriptionFile)]
 
     # For each region, add class_number attribute
     # that can be found in class description file
