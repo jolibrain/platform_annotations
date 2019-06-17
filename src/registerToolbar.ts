@@ -20,6 +20,9 @@ export enum ToolbarItemName {
     ExportProject = "exportProject",
     ActiveLearning = "activeLearning",
     ExportDeepDetect = "exportDeepDetect",
+    DeepDetectPredict = "deepdetectPredict",
+    DeepDetectValidate = "deepdetectValidate",
+    DeepDetectNext = "deepdetectNext",
 }
 
 export enum ToolbarItemGroup {
@@ -27,6 +30,7 @@ export enum ToolbarItemGroup {
     Regions = "regions",
     Navigation = "navigation",
     Project = "project",
+    DeepDetect = "deepdetect",
 }
 
 /**
@@ -164,6 +168,33 @@ export default function registerToolbar() {
         tooltip: strings.editorPage.toolbar.exportDeepDetect,
         icon: "fas fa-file-upload",
         group: ToolbarItemGroup.Project,
+        type: ToolbarItemType.Action,
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DeepDetectPredict,
+        tooltip: strings.editorPage.toolbar.deepdetectPredict,
+        icon: "fas fa-cube",
+        text: "Predict",
+        group: ToolbarItemGroup.DeepDetect,
+        type: ToolbarItemType.Action,
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DeepDetectValidate,
+        tooltip: strings.editorPage.toolbar.deepdetectValidate,
+        icon: "fas fa-check",
+        text: "Validate",
+        group: ToolbarItemGroup.DeepDetect,
+        type: ToolbarItemType.Action,
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DeepDetectNext,
+        tooltip: strings.editorPage.toolbar.deepdetectNext,
+        icon: "fas fa-caret-right",
+        text: "Next",
+        group: ToolbarItemGroup.DeepDetect,
         type: ToolbarItemType.Action,
     });
 }

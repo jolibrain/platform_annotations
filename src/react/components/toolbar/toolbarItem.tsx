@@ -17,6 +17,7 @@ import { ToolbarItemName, ToolbarItemGroup } from "../../../registerToolbar";
 export interface IToolbarItemMetadata {
     name: ToolbarItemName;
     icon: string;
+    text?: string;
     tooltip: string;
     group: ToolbarItemGroup;
     type: ToolbarItemType;
@@ -87,6 +88,7 @@ export abstract class ToolbarItem extends React.Component<IToolbarItemProps> {
                     title={this.getTitle()}
                     onClick={this.onClick}>
                     <i className={"fas " + this.props.icon} />
+                    { this.props.text ? this.props.text : '' }
                 </button>
             </Fragment>
         );

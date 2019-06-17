@@ -245,6 +245,9 @@ export const english: IAppStrings = {
             exportProject: "Export Project",
             activeLearning: "Active Learning",
             exportDeepDetect: "Export to DeepDetect Platform",
+            deepdetectPredict: "Predict with DeepDetect",
+            deepdetectValidate: "Export to DeepDetect Platform",
+            deepdetectNext: "Next Image/Frame",
         },
         videoPlayer: {
             previousTaggedFrame: {

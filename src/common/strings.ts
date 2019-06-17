@@ -244,6 +244,9 @@ export interface IAppStrings {
             exportProject: string;
             activeLearning: string;
             exportDeepDetect: string;
+            deepdetectPredict: string;
+            deepdetectValidate: string;
+            deepdetectNext: string;
         }
         videoPlayer: {
             nextTaggedFrame: {
