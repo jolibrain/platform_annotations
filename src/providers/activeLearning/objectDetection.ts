@@ -250,7 +250,7 @@ export class ObjectDetection {
           "parameters": {
             "input": {},
             "output": {
-              "confidence_threshold": 0.4,
+              "confidence_threshold": this.deepdetect.confidence,
               "bbox": true
             },
             "mllib": {

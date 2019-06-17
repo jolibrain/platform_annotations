@@ -19,6 +19,7 @@ export enum ToolbarItemName {
     SaveProject = "saveProject",
     ExportProject = "exportProject",
     ActiveLearning = "activeLearning",
+    ExportDeepDetect = "exportDeepDetect",
 }
 
 export enum ToolbarItemGroup {
@@ -157,4 +158,12 @@ export default function registerToolbar() {
         type: ToolbarItemType.Action,
         accelerators: ["CmdOrCtrl+E", "CmdOrCtrl+e"],
     }, ExportProject);
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.ExportDeepDetect,
+        tooltip: strings.editorPage.toolbar.exportDeepDetect,
+        icon: "fas fa-file-upload",
+        group: ToolbarItemGroup.Project,
+        type: ToolbarItemType.Action,
+    });
 }

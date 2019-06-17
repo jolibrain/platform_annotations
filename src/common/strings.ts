@@ -243,6 +243,7 @@ export interface IAppStrings {
             saveDeepDetect: string;
             exportProject: string;
             activeLearning: string;
+            exportDeepDetect: string;
         }
         videoPlayer: {
             nextTaggedFrame: {

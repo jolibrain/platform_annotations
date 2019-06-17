@@ -565,6 +565,8 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             case ToolbarItemName.ActiveLearning:
                 await this.predictRegions();
                 break;
+            case ToolbarItemName.ExportDeepDetect:
+                break;
         }
     }
 
