@@ -164,12 +164,6 @@ def detection_task():
                   int(region['ymax'])
               ))
 
-    # copy image file
-    shutil.copy(
-        os.path.join(srcPath, filename),
-        os.path.join(dstPath, filename)
-    )
-
     # write class description file
     with open(classDescriptionFile, 'w') as f:
         for item in classDescriptions:
