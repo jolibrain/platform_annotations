@@ -94,10 +94,10 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
               regions: options.regions.map(r => {
                 return {
                   classname: r.tags[0],
-                  xmin: r.points[0].x,
-                  ymin: r.points[0].y,
-                  xmax: r.points[3].x,
-                  ymax: r.points[3].y
+                  xmin: parseInt(r.points[0].x),
+                  ymin: parseInt(r.points[0].y),
+                  xmax: parseInt(r.points[3].x),
+                  ymax: parseInt(r.points[3].y)
                 }
               })
             }
