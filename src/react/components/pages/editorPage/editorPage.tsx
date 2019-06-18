@@ -468,6 +468,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
         }
 
         await this.props.actions.saveProject(this.props.project);
+      //await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
 
         const assetService = new AssetService(this.props.project);
         const childAssets = assetService.getChildAssets(rootAsset);
@@ -568,6 +569,9 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             case ToolbarItemName.DeepDetectValidate:
                 await this.saveAssetToDeepDetect();
                 break;
+            case ToolbarItemName.DeepDetectNext:
+                await this.goToNextResource();
+                break;
         }
     }
 
@@ -620,18 +624,33 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
         }
     }
 
-    private saveAssetToDeepDetect = async () => {
+    private goToNextResource = async () => {
         const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
-        const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
 
         switch(selectedRootAsset.type) {
           case AssetType.Image:
+            this.goToRootAsset(1)
+            break;
+          case AssetType.Video:
+            break;
+          default:
+            break;
+        }
+    }
+
+    private saveAssetToDeepDetect = async () => {
+        const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+
+        switch(selectedRootAsset.type) {
+          case AssetType.Image:
+            const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
             await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
             break;
           case AssetType.Video:
-            const canvas = document.querySelector("canvas");
-            const image = canvas.toDataURL('image/jpeg').replace(/^data:image\/\w+;base64,/, "");
-            await this.props.actions.saveDeepDetectBase64(this.props.project, assetMetadata, image);
+            this.setState(state => {
+              state.additionalSettings.videoSettings.nextFrame = (new Date).getTime()
+              return state
+            })
             break;
           default:
             break;

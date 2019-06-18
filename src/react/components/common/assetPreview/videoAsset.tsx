@@ -45,7 +45,7 @@ export interface IVideoPlayerState {
 export class VideoAsset extends React.Component<IVideoAssetProps> {
     /** Default properties for the VideoAsset if not defined */
     public static defaultProps: IVideoAssetProps = {
-        autoPlay: false,
+        autoPlay: true,
         controlsEnabled: true,
         timestamp: null,
         asset: null,
@@ -62,9 +62,9 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
     public render() {
         const { autoPlay, asset } = this.props;
         let videoPath = asset.path;
-      // if (!autoPlay) {
-      //     videoPath = `${asset.path}#t=5.0`;
-      // }
+        if (!autoPlay) {
+            videoPath = `${asset.path}#t=5.0`;
+        }
 
         return (
             <Player ref={this.videoPlayer}
@@ -76,46 +76,51 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                 onError={this.props.onError}
                 crossOrigin="anonymous">
                 <BigPlayButton position="center" />
-                <ControlBar autoHide={false}>
-                    {!this.props.controlsEnabled &&
-                        <Fragment>
-                            <div className="video-react-control-bar-disabled"></div>
-                        </Fragment>
-                    }
-                    <CustomVideoPlayerButton order={1.1}
-                        tooltip={strings.editorPage.videoPlayer.previousExpectedFrame.tooltip}
-                        onClick={this.movePreviousExpectedFrame}
-                        icon={"fa-caret-left fa-lg"}
-                    >
-                        <i className="fas fa-caret-left fa-lg" />
-                    </CustomVideoPlayerButton>
-                    <CustomVideoPlayerButton order={1.2}
-                        tooltip={strings.editorPage.videoPlayer.nextExpectedFrame.tooltip}
-                        onClick={this.moveNextExpectedFrame}
-                        icon={"fa-caret-right fa-lg"}
-                    >
-                        <i className="fas fa-caret-right fa-lg" />
-                        &nbps;Next
-                    </CustomVideoPlayerButton>
-                    <CurrentTimeDisplay order={1.3} />
-                    <TimeDivider order={1.4} />
-                    <PlaybackRateMenuButton rates={[5, 2, 1, 0.5, 0.25]} order={7.1} />
-                    <VolumeMenuButton enabled order={7.2} />
-                    <CustomVideoPlayerButton order={8.1}
-                        tooltip={strings.editorPage.videoPlayer.previousTaggedFrame.tooltip}
-                        onClick={this.movePreviousTaggedFrame}
-                        icon={"fas fa-step-backward"}
-                    >
-                        <i className="fas fa-step-backward"></i>
-                    </CustomVideoPlayerButton>
-                    <CustomVideoPlayerButton order={8.2}
-                        tooltip={strings.editorPage.videoPlayer.nextTaggedFrame.tooltip}
-                        onClick={this.moveNextTaggedFrame}
-                        icon={"fa-step-forward"}
-                    >
-                        <i className="fas fa-step-forward"></i>
-                    </CustomVideoPlayerButton>
-                </ControlBar>
+                {autoPlay &&
+                    <ControlBar autoHide={false}>
+                        {!this.props.controlsEnabled &&
+                            <Fragment>
+                                <div className="video-react-control-bar-disabled"></div>
+                            </Fragment>
+                        }
+                        <CustomVideoPlayerButton order={1.1}
+                            accelerators={["ArrowLeft", "A", "a"]}
+                            tooltip={strings.editorPage.videoPlayer.previousExpectedFrame.tooltip}
+                            onClick={this.movePreviousExpectedFrame}
+                            icon={"fa-caret-left fa-lg"}
+                        >
+                            <i className="fas fa-caret-left fa-lg" />
+                        </CustomVideoPlayerButton>
+                        <CustomVideoPlayerButton order={1.2}
+                            accelerators={["ArrowRight", "D", "d"]}
+                            tooltip={strings.editorPage.videoPlayer.nextExpectedFrame.tooltip}
+                            onClick={this.moveNextExpectedFrame}
+                            icon={"fa-caret-right fa-lg"}
+                        >
+                            <i className="fas fa-caret-right fa-lg" />
+                        </CustomVideoPlayerButton>
+                        <CurrentTimeDisplay order={1.3} />
+                        <TimeDivider order={1.4} />
+                        <PlaybackRateMenuButton rates={[5, 2, 1, 0.5, 0.25]} order={7.1} />
+                        <VolumeMenuButton enabled order={7.2} />
+                        <CustomVideoPlayerButton order={8.1}
+                            accelerators={["Q", "q"]}
+                            tooltip={strings.editorPage.videoPlayer.previousTaggedFrame.tooltip}
+                            onClick={this.movePreviousTaggedFrame}
+                            icon={"fas fa-step-backward"}
+                        >
+                            <i className="fas fa-step-backward"></i>
+                        </CustomVideoPlayerButton>
+                        <CustomVideoPlayerButton order={8.2}
+                            accelerators={["E", "e"]}
+                            tooltip={strings.editorPage.videoPlayer.nextTaggedFrame.tooltip}
+                            onClick={this.moveNextTaggedFrame}
+                            icon={"fa-step-forward"}
+                        >
+                            <i className="fas fa-step-forward"></i>
+                        </CustomVideoPlayerButton>
+                    </ControlBar>
+                }
             </Player >
         );
     }
@@ -224,6 +229,10 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
             // Video initial load complete
             this.raiseLoaded();
             this.raiseActivated();
+
+            if (this.props.autoPlay) {
+                this.videoPlayer.current.play();
+            }
         } else if (state.paused && (state.currentTime !== prev.currentTime || state.seeking !== prev.seeking)) {
             // Video is paused, make sure we are on a key frame, and if we are not, seek to that
             // before raising the child selected event
@@ -320,6 +329,10 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
      * @param videoDuration - Length (in seconds) of the video
      */
     private addAssetTimelineTags = (childAssets: any[], videoDuration: number) => {
+        if (!this.props.autoPlay) {
+            return;
+        }
+
         const assetTimelineTagLines = this.renderTimeline(childAssets, videoDuration);
         const timelineSelector = ".editor-page-content-main-body .video-react-progress-control .video-timeline-root";
         this.timelineElement = document.querySelector(timelineSelector);
