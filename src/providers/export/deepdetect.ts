@@ -16,6 +16,7 @@ export interface IDeepdetectExportProviderOptions extends IExportProviderOptions
   includeImages: boolean;
   asset: any;
   regions: any[];
+  fileContent?: string;
 }
 
 /**
@@ -61,15 +62,21 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
       )
         return null;
 
+      let item = {
+        filename: options.asset.name,
+        content: null,
+        classname: options.regions[0].tags[0]
+      };
+
+      if(this.options.fileContent) {
+        item.content = options.fileContent;
+      }
+
       await axios.post(
         'tasks/classification',
         {
           targetDir: containerName,
-          item:
-            {
-              filename: options.asset.name,
-              classname: options.regions[0].tags[0]
-            }
+          item: item
         }
       );
     }
@@ -84,23 +91,29 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
       )
         return null;
 
+      let item = {
+        filename: options.asset.name,
+        content: null,
+        regions: options.regions.map(r => {
+          return {
+            classname: r.tags[0],
+            xmin: parseInt(r.points[0].x),
+            ymin: parseInt(r.points[0].y),
+            xmax: parseInt(r.points[2].x),
+            ymax: parseInt(r.points[2].y)
+          }
+        })
+      };
+
+      if(this.options.fileContent) {
+        item.content = options.fileContent;
+      }
+
       await axios.post(
         'tasks/detection',
         {
           targetDir: containerName,
-          item:
-            {
-              filename: options.asset.name,
-              regions: options.regions.map(r => {
-                return {
-                  classname: r.tags[0],
-                  xmin: parseInt(r.points[0].x),
-                  ymin: parseInt(r.points[0].y),
-                  xmax: parseInt(r.points[2].x),
-                  ymax: parseInt(r.points[2].y)
-                }
-              })
-            }
+          item: item
         }
       );
     }

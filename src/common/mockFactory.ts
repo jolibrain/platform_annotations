@@ -822,6 +822,7 @@ export default class MockFactory {
             loadProject: jest.fn(() => Promise.resolve()),
             saveProject: jest.fn(() => Promise.resolve()),
             saveDeepDetect: jest.fn(() => Promise.resolve()),
+            saveDeepDetectBase64: jest.fn(() => Promise.resolve()),
             deleteProject: jest.fn(() => Promise.resolve()),
             closeProject: jest.fn(() => Promise.resolve()),
             loadAssets: jest.fn(() => Promise.resolve()),

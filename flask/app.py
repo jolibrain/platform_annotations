@@ -23,6 +23,7 @@ def classification_task():
             parameter is equal to */client/images/*
         * item: image file to process
             * filename: image filename
+            * content: image base64 content
             * classname: class associated to this image, this classname will
                 determine where the image will be moved. If classname is *dog*,
                 then */opt/platform/data/client/images/img,jpg* will be moved
@@ -35,6 +36,10 @@ def classification_task():
     filename = dataDict['item']['filename'].decode('utf-8')
     classname = dataDict['item']['classname'].decode('utf-8')
 
+    if hasattr(dataDict['item'], 'content'):
+        useContent = True
+        filecontent = dataDict['item']['content']
+
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
     dstPath = os.path.join(srcPath, 'train', classname)
 
@@ -46,16 +51,27 @@ def classification_task():
         else:
             raise
 
-    if os.path.exists(os.path.join(srcPath, filename)):
-        shutil.copy(
-            os.path.join(srcPath, filename),
-            os.path.join(dstPath, filename)
-        )
+    if useContent:
 
-        return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        # Write new file in classname folder with request content
+        g = open(os.path.join(dstPath, filename), "w")
+        g.write(content.decode('base64'))
+        g.close()
+
     else:
-        # Source file doesn't exist
-        return json.dumps({'success':False}), 200, {'ContentType':'application/json'}
+
+        # Content was not sent in request, just copy original file
+        # to classname folder
+        if os.path.exists(os.path.join(srcPath, filename)):
+            shutil.copy(
+                os.path.join(srcPath, filename),
+                os.path.join(dstPath, filename)
+            )
+
+            return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        else:
+            # Source file doesn't exist
+            return json.dumps({'success':False}), 200, {'ContentType':'application/json'}
 
 @app.route('/detection', methods=['POST'])
 def detection_task():
@@ -70,6 +86,7 @@ def detection_task():
             parameter is equal to */client/images/*
         * item: image file to process
             * filename: image filename
+            * content: image base64 content
             * regions: array of regions on the image with various classnames
                 * region:
                     * classname: class associated with this region
@@ -106,6 +123,10 @@ def detection_task():
     filename = dataDict['item']['filename'].decode('utf-8')
     regions = dataDict['item']['regions']
 
+    if hasattr(dataDict['item'], 'content'):
+        useContent = True
+        filecontent = dataDict['item']['content']
+
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
     bboxPath = os.path.join(srcPath, 'detection', 'bbox')
@@ -127,11 +148,21 @@ def detection_task():
         else:
             raise
 
-    # copy image to detection image folder
-    shutil.copy(
-        os.path.join(srcPath, filename),
-        os.path.join(imagePath, filename)
-    )
+    if useContent:
+
+        # Write new file in classname folder with request content
+        g = open(os.path.join(imagePath, filename), "w")
+        g.write(content.decode('base64'))
+        g.close()
+
+    else:
+
+        # Content was not sent in request, just copy original file
+        # to the training folder
+        shutil.copy(
+            os.path.join(srcPath, filename),
+            os.path.join(imagePath, filename)
+        )
 
     classDescriptionFile = os.path.join(srcPath, 'deepdetect_classes.txt')
 

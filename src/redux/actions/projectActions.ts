@@ -25,6 +25,7 @@ export default interface IProjectActions {
     loadProject(project: IProject): Promise<IProject>;
     saveProject(project: IProject): Promise<IProject>;
     saveDeepDetect(project: IProject, assetMetadata: IAssetMetadata): Promise<IExportResults>;
+    saveDeepDetectBase64(project: IProject, assetMetadata: IAssetMetadata, base64: string): Promise<IExportResults>;
     deleteProject(project: IProject): Promise<void>;
     closeProject(): void;
     exportProject(project: IProject): Promise<void> | Promise<IExportResults>;
@@ -94,6 +95,7 @@ export function saveProject(project: IProject)
 /**
  * Dispatches Save DeepDetect action and resolves with IProject
  * @param project - Project to save
+ * @param assetMetadata - Asset metadata
  */
 export function saveDeepDetect(project: IProject, assetMetadata: IAssetMetadata): (dispatch: Dispatch) => Promise<IExportResults> {
     return async (dispatch: Dispatch) => {
@@ -102,10 +104,47 @@ export function saveDeepDetect(project: IProject, assetMetadata: IAssetMetadata)
         }
 
         if (project.exportFormat && project.exportFormat.providerType) {
+
+            let params = project.exportFormat.providerOptions;
+            params = Object.assign(params, assetMetadata);
+
             const exportProvider = ExportProviderFactory.create(
-                'deepdetect',
-                project,
-                Object.assign(project.exportFormat.providerOptions, assetMetadata));
+              'deepdetect',
+              project,
+              params
+            );
+
+            const results = await exportProvider.export();
+            dispatch(exportProjectAction(project));
+
+            return results as IExportResults;
+        }
+    };
+}
+
+/**
+ * Dispatches Save DeepDetect action and resolves with IProject
+ * @param project - Project to save
+ * @param assetMetadata - Asset metadata
+ * @param base64 - Asset in base64 format
+ */
+export function saveDeepDetectBase64(project: IProject, assetMetadata: IAssetMetadata, base64: string): (dispatch: Dispatch) => Promise<IExportResults> {
+    return async (dispatch: Dispatch) => {
+        if (!project.exportFormat) {
+            throw new AppError(ErrorCode.ExportFormatNotFound, strings.errors.exportFormatNotFound.message);
+        }
+
+        if (project.exportFormat && project.exportFormat.providerType) {
+
+            let params = project.exportFormat.providerOptions;
+            params = Object.assign(params, assetMetadata);
+            params = Object.assign(params, {fileContent: base64});
+
+            const exportProvider = ExportProviderFactory.create(
+              'deepdetect',
+              project,
+              params
+            );
 
             const results = await exportProvider.export();
             dispatch(exportProjectAction(project));
