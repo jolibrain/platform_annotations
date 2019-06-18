@@ -36,13 +36,6 @@ def classification_task():
     filename = dataDict['item']['filename'].decode('utf-8')
     classname = dataDict['item']['classname'].decode('utf-8')
 
-    # by default, do not use base64 content from http request to create a file
-    useContent = False
-
-    if hasattr(dataDict['item'], 'content'):
-        useContent = True
-        filecontent = dataDict['item']['content']
-
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
     dstPath = os.path.join(srcPath, 'train', classname)
 
@@ -54,11 +47,12 @@ def classification_task():
         else:
             raise
 
-    if useContent:
+    # check content attribute in item param from http request
+    if hasattr(dataDict['item'], 'content'):
 
         # Write new file in classname folder with request content
         g = open(os.path.join(dstPath, filename), "w")
-        g.write(content.decode('base64'))
+        g.write(dataDict['item']['content'].decode('base64'))
         g.close()
 
     else:
@@ -127,11 +121,7 @@ def detection_task():
     regions = dataDict['item']['regions']
 
     # by default, do not use base64 content from http request to create a file
-    useContent = False
-
-    if hasattr(dataDict['item'], 'content'):
-        useContent = True
-        filecontent = dataDict['item']['content']
+    useContent = hasattr(dataDict['item'], 'content')
 
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
@@ -154,7 +144,8 @@ def detection_task():
         else:
             raise
 
-    if useContent:
+    # check content attribute in item param from http request
+    if hasattr(dataDict['item'], 'content'):
 
         # Write new file in classname folder with request content
         g = open(os.path.join(imagePath, filename), "w")
