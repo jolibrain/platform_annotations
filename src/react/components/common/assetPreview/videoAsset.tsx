@@ -62,9 +62,9 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
     public render() {
         const { autoPlay, asset } = this.props;
         let videoPath = asset.path;
-        if (!autoPlay) {
-            videoPath = `${asset.path}#t=5.0`;
-        }
+      // if (!autoPlay) {
+      //     videoPath = `${asset.path}#t=5.0`;
+      // }
 
         return (
             <Player ref={this.videoPlayer}
@@ -95,7 +95,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                         icon={"fa-caret-right fa-lg"}
                     >
                         <i className="fas fa-caret-right fa-lg" />
-                        Next
+                        &nbps;Next
                     </CustomVideoPlayerButton>
                     <CurrentTimeDisplay order={1.3} />
                     <TimeDivider order={1.4} />
