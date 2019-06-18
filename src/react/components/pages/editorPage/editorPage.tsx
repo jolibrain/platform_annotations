@@ -225,7 +225,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                                         lockedTags={this.state.lockedTags}>
                                         <AssetPreview
                                             additionalSettings={this.state.additionalSettings}
-                                            autoPlay={false}
+                                            autoPlay={true}
                                             controlsEnabled={this.state.isValid}
                                             onBeforeAssetChanged={this.onBeforeAssetSelected}
                                             onChildAssetSelected={this.onChildAssetSelected}
