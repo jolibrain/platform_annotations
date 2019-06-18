@@ -45,7 +45,7 @@ export interface IVideoPlayerState {
 export class VideoAsset extends React.Component<IVideoAssetProps> {
     /** Default properties for the VideoAsset if not defined */
     public static defaultProps: IVideoAssetProps = {
-        autoPlay: true,
+        autoPlay: false,
         controlsEnabled: true,
         timestamp: null,
         asset: null,
@@ -224,10 +224,6 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
             // Video initial load complete
             this.raiseLoaded();
             this.raiseActivated();
-
-            if (this.props.autoPlay) {
-                this.videoPlayer.current.play();
-            }
         } else if (state.paused && (state.currentTime !== prev.currentTime || state.seeking !== prev.seeking)) {
             // Video is paused, make sure we are on a key frame, and if we are not, seek to that
             // before raising the child selected event
@@ -324,10 +320,6 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
      * @param videoDuration - Length (in seconds) of the video
      */
     private addAssetTimelineTags = (childAssets: any[], videoDuration: number) => {
-        if (!this.props.autoPlay) {
-            return;
-        }
-
         const assetTimelineTagLines = this.renderTimeline(childAssets, videoDuration);
         const timelineSelector = ".editor-page-content-main-body .video-react-progress-control .video-timeline-root";
         this.timelineElement = document.querySelector(timelineSelector);
