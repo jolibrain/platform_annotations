@@ -639,22 +639,22 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
     }
 
     private saveAssetToDeepDetect = async () => {
-        const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+      const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+      const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
 
-        switch(selectedRootAsset.type) {
-          case AssetType.Image:
-            const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
-            await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
-            break;
-          case AssetType.Video:
-            this.setState(state => {
-              state.additionalSettings.videoSettings.nextFrame = (new Date).getTime()
-              return state
-            })
-            break;
-          default:
-            break;
-        }
+      switch(selectedRootAsset.type) {
+        case AssetType.Image:
+          await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
+          break;
+        case AssetType.Video:
+          const canvas = document.querySelector("canvas");
+          const image = canvas.toDataURL('image/jpeg').replace(/^data:image\/\w+;base64,/, "");
+          await this.props.actions.saveDeepDetectBase64(this.props.project, assetMetadata, image);
+          break;
+        default:
+          break;
+      }
+
     }
 
     private onBeforeAssetSelected = (): boolean => {
