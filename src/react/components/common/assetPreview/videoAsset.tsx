@@ -95,6 +95,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                         icon={"fa-caret-right fa-lg"}
                     >
                         <i className="fas fa-caret-right fa-lg" />
+                        Next
                     </CustomVideoPlayerButton>
                     <CurrentTimeDisplay order={1.3} />
                     <TimeDivider order={1.4} />
