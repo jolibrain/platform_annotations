@@ -36,6 +36,9 @@ def classification_task():
     filename = dataDict['item']['filename'].decode('utf-8')
     classname = dataDict['item']['classname'].decode('utf-8')
 
+    # by default, do not use base64 content from http request to create a file
+    useContent = False
+
     if hasattr(dataDict['item'], 'content'):
         useContent = True
         filecontent = dataDict['item']['content']
@@ -122,6 +125,9 @@ def detection_task():
     dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
     filename = dataDict['item']['filename'].decode('utf-8')
     regions = dataDict['item']['regions']
+
+    # by default, do not use base64 content from http request to create a file
+    useContent = False
 
     if hasattr(dataDict['item'], 'content'):
         useContent = True
