@@ -569,9 +569,6 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             case ToolbarItemName.DeepDetectValidate:
                 await this.saveAssetToDeepDetect();
                 break;
-            case ToolbarItemName.DeepDetectNext:
-                await this.goToNextResource();
-                break;
         }
     }
 
@@ -621,24 +618,6 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             await this.selectAsset(this.state.assets[Math.min(this.state.assets.length - 1, currentIndex + 1)]);
         } else {
             await this.selectAsset(this.state.assets[Math.max(0, currentIndex - 1)]);
-        }
-    }
-
-    private goToNextResource = async () => {
-        const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
-
-        switch(selectedRootAsset.type) {
-          case AssetType.Image:
-            this.goToRootAsset(1)
-            break;
-          case AssetType.Video:
-            this.setState(state => {
-              state.additionalSettings.videoSettings.nextFrame = (new Date).getTime()
-              return state
-            })
-            break;
-          default:
-            break;
         }
     }
 

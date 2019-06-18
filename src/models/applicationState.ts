@@ -200,7 +200,6 @@ export interface IExportFormat {
  */
 export interface IProjectVideoSettings {
     frameExtractionRate: number;
-    nextFrame?: number;
 }
 
 /**

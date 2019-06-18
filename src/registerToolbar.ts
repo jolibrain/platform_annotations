@@ -189,12 +189,4 @@ export default function registerToolbar() {
         type: ToolbarItemType.Action,
     });
 
-    ToolbarItemFactory.register({
-        name: ToolbarItemName.DeepDetectNext,
-        tooltip: strings.editorPage.toolbar.deepdetectNext,
-        icon: "fas fa-caret-right",
-        text: "Next",
-        group: ToolbarItemGroup.DeepDetect,
-        type: ToolbarItemType.Action,
-    });
 }

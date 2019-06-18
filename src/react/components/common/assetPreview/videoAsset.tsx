@@ -83,6 +83,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                         </Fragment>
                     }
                     <CustomVideoPlayerButton order={1.1}
+                        accelerators={["ArrowLeft", "A", "a"]}
                         tooltip={strings.editorPage.videoPlayer.previousExpectedFrame.tooltip}
                         onClick={this.movePreviousExpectedFrame}
                         icon={"fa-caret-left fa-lg"}
@@ -90,6 +91,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                         <i className="fas fa-caret-left fa-lg" />
                     </CustomVideoPlayerButton>
                     <CustomVideoPlayerButton order={1.2}
+                        accelerators={["ArrowRight", "D", "d"]}
                         tooltip={strings.editorPage.videoPlayer.nextExpectedFrame.tooltip}
                         onClick={this.moveNextExpectedFrame}
                         icon={"fa-caret-right fa-lg"}
@@ -101,6 +103,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                     <PlaybackRateMenuButton rates={[5, 2, 1, 0.5, 0.25]} order={7.1} />
                     <VolumeMenuButton enabled order={7.2} />
                     <CustomVideoPlayerButton order={8.1}
+                        accelerators={["Q", "q"]}
                         tooltip={strings.editorPage.videoPlayer.previousTaggedFrame.tooltip}
                         onClick={this.movePreviousTaggedFrame}
                         icon={"fas fa-step-backward"}
@@ -108,6 +111,7 @@ export class VideoAsset extends React.Component<IVideoAssetProps> {
                         <i className="fas fa-step-backward"></i>
                     </CustomVideoPlayerButton>
                     <CustomVideoPlayerButton order={8.2}
+                        accelerators={["E", "e"]}
                         tooltip={strings.editorPage.videoPlayer.nextTaggedFrame.tooltip}
                         onClick={this.moveNextTaggedFrame}
                         icon={"fa-step-forward"}
