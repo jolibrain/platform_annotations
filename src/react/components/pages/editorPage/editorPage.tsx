@@ -639,7 +639,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
     }
 
     private saveAssetToDeepDetect = async () => {
-      const selectedRootAsset = this.state.selectedAsset.asset.parent || this.state.selectedAsset.asset;
+      const selectedRootAsset = this.state.selectedAsset.asset;
       const assetMetadata = await this.props.actions.loadAssetMetadata(this.props.project, selectedRootAsset);
 
       switch(selectedRootAsset.type) {
