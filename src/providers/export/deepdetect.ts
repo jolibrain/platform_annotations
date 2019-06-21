@@ -68,8 +68,14 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         classname: options.regions[0].tags[0]
       };
 
+      if(item.filename.indexOf('#t=') !== -1) {
+        const [ basename, timestamp ] = item.filename.split('#t=');
+        item.filename = `${parseInt(timestamp)}_${basename}`;
+      }
+
       if(this.options.fileContent) {
         item.content = options.fileContent;
+        item.filename = item.filename.substr(0, item.filename.lastIndexOf(".")) + ".jpg";
       }
 
       await axios.post(
@@ -105,8 +111,14 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         })
       };
 
+      if(item.filename.indexOf('#t=') !== -1) {
+        const [ basename, timestamp ] = item.filename.split('#t=');
+        item.filename = `${parseInt(timestamp)}_${basename}`;
+      }
+
       if(this.options.fileContent) {
         item.content = options.fileContent;
+        item.filename = item.filename.substr(0, item.filename.lastIndexOf(".")) + ".jpg";
       }
 
       await axios.post(
