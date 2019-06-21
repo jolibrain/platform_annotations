@@ -148,12 +148,29 @@
 <p><img alt="VoTT New Project" src="img/vott_new_project.png" /></p>
 <p><img alt="VoTT New Project - Connections" src="img/vott_new_project_select_connector.png" /></p>
 <h2 id="active-learning">Active Learning</h2>
-<p>TBD</p>
+<p>You need to setup Active Learning in order to make predict request on DeepDetect Platform:</p>
+<p><img alt="VoTT - Home - Active Learning" src="img/vott_home_select_active_learning.png" /></p>
+<p><img alt="VoTT - Active Learning" src="img/vott_active_learning.png" /></p>
+<p>First, you need to select <em>DeepDetect Model Provider</em>:</p>
+<p><img alt="VoTT New Project" src="img/vott_active_learning_selected_provider.png" /></p>
+<p>Then configure the <em>Platform API URL</em> and the <em>Service Name</em></p>
+<p><img alt="VoTT New Project" src="img/vott_active_learning_selected_deepdetect.png" /></p>
 <h2 id="tag-editor_1">Tag Editor</h2>
 <p>When the project has been created, the <em>Tag Editor</em> tab will be available, with images from the connection</p>
-<p><img alt="VoTT Tag Editor" src="img/vott_tag_editor.png" /></p>
+<p><img alt="VoTT Tag Editor" src="img/vott_tag_editor_detection.png" /></p>
+<p>Click on <em>Predict</em> button to have predict results from DeepDetect Platform:</p>
+<p><img alt="VoTT Tag Editor - Predict" src="img/vott_tag_editor_select_predict.png" /></p>
+<p>Then clean the displayed bounding boxes - you can add more, and delete some - and click on <em>Validate</em> button to send results to the DeepDetect Platform in order to use them later to train your object detector:</p>
+<p><img alt="VoTT Tag Editor - Validate" src="img/vott_tag_editor_select_predict.png" /></p>
 <h2 id="result-folder_1">Result Folder</h2>
-<p>TBD</p></div>
+<p>Results are avaible on the DeepDetect Platform Filebrowser.</p>
+<p>You can navigate to your connection data path:</p>
+<p><img alt="Filebrowser - Connector Home" src="img/filebrowser_images.png" /></p>
+<p>You'll find a new "<strong>detection</strong>" folder:</p>
+<p><img alt="Filebrowser - Select Detection Folder" src="img/filebrowser_images_select_detection.png" /></p>
+<p>Inside this "<strong>detection</strong>" folder, you will find an <em>img</em> folder containing your images, and a <em>bbox</em> folder containing a text file with the description of the bounding boxes for each image:</p>
+<p><img alt="Filebrowser - Detection Folder" src="img/filebrowser_images_detection.png" /></p>
+<p>You can now use this folder to train your object detector as described in the DeepDetect Platform: https://www.deepdetect.com/platform/docs/object-detection/</p></div>
         </div>
 
         <footer class="col-md-12">
@@ -236,5 +253,5 @@
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-06-14 13:11:37
+Build Date UTC : 2019-06-21 15:10:20
 -->
