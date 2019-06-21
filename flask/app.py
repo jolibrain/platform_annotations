@@ -33,8 +33,10 @@ def classification_task():
     dataDict = json.loads(data)
 
     dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
-    filename = dataDict['item']['filename'].decode('utf-8')
-    classname = dataDict['item']['classname'].decode('utf-8')
+
+    item = dataDict['item']
+    filename = item['filename'].decode('utf-8')
+    classname = item['classname'].decode('utf-8')
 
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
     dstPath = os.path.join(srcPath, 'train', classname)
@@ -48,11 +50,11 @@ def classification_task():
             raise
 
     # check content attribute in item param from http request
-    if hasattr(dataDict['item'], 'content'):
+    if 'content' in item:
 
         # Write new file in classname folder with request content
         g = open(os.path.join(dstPath, filename), "w")
-        g.write(dataDict['item']['content'].decode('base64'))
+        g.write(item['content'].decode('base64'))
         g.close()
 
     else:
@@ -117,11 +119,10 @@ def detection_task():
     dataDict = json.loads(data)
 
     dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
-    filename = dataDict['item']['filename'].decode('utf-8')
-    regions = dataDict['item']['regions']
 
-    # by default, do not use base64 content from http request to create a file
-    useContent = hasattr(dataDict['item'], 'content')
+    item = dataDict['item']
+    filename = item['filename'].decode('utf-8')
+    regions = item['regions']
 
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
@@ -145,11 +146,11 @@ def detection_task():
             raise
 
     # check content attribute in item param from http request
-    if hasattr(dataDict['item'], 'content'):
+    if 'content' in item:
 
         # Write new file in classname folder with request content
         g = open(os.path.join(imagePath, filename), "w")
-        g.write(content.decode('base64'))
+        g.write(item['content'].decode('base64'))
         g.close()
 
     else:
@@ -164,8 +165,8 @@ def detection_task():
     classDescriptionFile = os.path.join(srcPath, 'deepdetect_classes.txt')
 
     # File doesn't exist, create it
-    if os.path.exists(classDescriptionFile):
-        os.utime(classDescriptionFile, None)
+    if os.path.exists(classDescriptionFile) is False:
+        open(classDescriptionFile, 'a').close()
 
     # Get existing classes from class description file
     classDescriptions = [line.rstrip() for line in open(classDescriptionFile)]
