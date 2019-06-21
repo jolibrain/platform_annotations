@@ -142,14 +142,48 @@ You will find the following options for the DeepDetect Platform Storage provider
 
 ## Active Learning
 
-TBD
+You need to setup Active Learning in order to make predict request on DeepDetect Platform:
+
+![VoTT - Home - Active Learning](img/vott_home_select_active_learning.png)
+
+![VoTT - Active Learning](img/vott_active_learning.png)
+
+First, you need to select *DeepDetect Model Provider*:
+
+![VoTT New Project](img/vott_active_learning_selected_provider.png)
+
+Then configure the *Platform API URL* and the *Service Name*
+
+![VoTT New Project](img/vott_active_learning_selected_deepdetect.png)
 
 ## Tag Editor
 
 When the project has been created, the *Tag Editor* tab will be available, with images from the connection
 
-![VoTT Tag Editor](img/vott_tag_editor.png)
+![VoTT Tag Editor](img/vott_tag_editor_detection.png)
+
+Click on *Predict* button to have predict results from DeepDetect Platform:
+
+![VoTT Tag Editor - Predict](img/vott_tag_editor_select_predict.png)
+
+Then clean the displayed bounding boxes - you can add more, and delete some - and click on *Validate* button to send results to the DeepDetect Platform in order to use them later to train your object detector:
+
+![VoTT Tag Editor - Validate](img/vott_tag_editor_select_predict.png)
 
 ## Result Folder
 
-TBD
+Results are avaible on the DeepDetect Platform Filebrowser.
+
+You can navigate to your connection data path:
+
+![Filebrowser - Connector Home](img/filebrowser_images.png)
+
+You'll find a new "**detection**" folder:
+
+![Filebrowser - Select Detection Folder](img/filebrowser_images_select_detection.png)
+
+Inside this "**detection**" folder, you will find an *img* folder containing your images, and a *bbox* folder containing a text file with the description of the bounding boxes for each image:
+
+![Filebrowser - Detection Folder](img/filebrowser_images_detection.png)
+
+You can now use this folder to train your object detector as described in the DeepDetect Platform: https://www.deepdetect.com/platform/docs/object-detection/
