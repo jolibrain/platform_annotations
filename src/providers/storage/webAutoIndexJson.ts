@@ -47,7 +47,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      */
     public async readText(blobName: string): Promise<string> {
       const response = await axios.get(path.join(this.readPath, this.options.containerName, blobName))
-      return response.data;
+      return JSON.stringify(response.data);
     }
 
     /**
