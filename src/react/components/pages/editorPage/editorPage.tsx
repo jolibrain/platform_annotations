@@ -647,6 +647,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
           await this.props.actions.saveDeepDetect(this.props.project, assetMetadata);
           break;
         case AssetType.Video:
+        case AssetType.VideoFrame:
           const canvas = document.querySelector("canvas");
           const image = canvas.toDataURL('image/jpeg').replace(/^data:image\/\w+;base64,/, "");
           await this.props.actions.saveDeepDetectBase64(this.props.project, assetMetadata, image);
