@@ -84,7 +84,8 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param blobName - Name of blob in container
      */
     public async deleteFile(blobName: string): Promise<void> {
-        throw new Error("Method deleteFile not implemented.");
+        const filepath = path.join(this.writePath, this.options.containerName, blobName);
+        await axios.delete(filepath);
     }
 
     /**
