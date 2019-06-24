@@ -23,6 +23,7 @@ export const english: IAppStrings = {
         close: "Close",
     },
     homePage: {
+        newConnection: "New Connection",
         newProject: "New Project",
         openLocalProject: {
             title: "Open Local Project",

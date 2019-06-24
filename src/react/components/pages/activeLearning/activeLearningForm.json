@@ -6,17 +6,17 @@
             "title": "${strings.activeLearning.form.properties.modelPathType.title}",
             "description": "${strings.activeLearning.form.properties.modelPathType.description}",
             "enum": [
+                "deepdetect",
                 "coco",
                 "file",
-                "url",
-                "deepdetect"
+                "url"
             ],
             "default": "deepdetect",
             "enumNames": [
+                "DeepDetect",
                 "${strings.activeLearning.form.properties.modelPathType.options.preTrained}",
                 "${strings.activeLearning.form.properties.modelPathType.options.customFilePath}",
-                "${strings.activeLearning.form.properties.modelPathType.options.customWebUrl}",
-                "DeepDetect"
+                "${strings.activeLearning.form.properties.modelPathType.options.customWebUrl}"
             ]
         },
         "autoDetect": {
@@ -33,6 +33,34 @@
     "dependencies": {
         "modelPathType": {
             "oneOf": [
+                {
+                    "required": [
+                        "modelDdUrl",
+                        "modelDdService"
+                    ],
+                    "properties": {
+                        "modelPathType": {
+                            "enum": [
+                                "deepdetect"
+                            ]
+                        },
+                        "modelDdUrl": {
+                            "title": "DeepDetect Platform API Url",
+                            "default": "http://eris:18104/api/private",
+                            "type": "string"
+                        },
+                        "modelDdService": {
+                            "title": "Service Name",
+                            "default": "generic_detect_v2",
+                            "type": "string"
+                        },
+                        "modelDdConfidence": {
+                            "title": "Confidence Threshold",
+                            "default": 0.4,
+                            "type": "number"
+                        }
+                    }
+                },
                 {
                     "properties": {
                         "modelPathType": {
@@ -75,34 +103,6 @@
                             "default": "http://",
                             "pattern": "^https?\\\\://[a-zA-Z0-9\\\\-\\\\.]+\\\\.[a-zA-Z]{2,3}(/\\\\S*)?$",
                             "type": "string"
-                        }
-                    }
-                },
-                {
-                    "required": [
-                        "modelDdUrl",
-                        "modelDdService"
-                    ],
-                    "properties": {
-                        "modelPathType": {
-                            "enum": [
-                                "deepdetect"
-                            ]
-                        },
-                        "modelDdUrl": {
-                            "title": "DeepDetect Platform API Url",
-                            "default": "http://eris:18104/api/private",
-                            "type": "string"
-                        },
-                        "modelDdService": {
-                            "title": "Service Name",
-                            "default": "detection_600",
-                            "type": "string"
-                        },
-                        "modelDdConfidence": {
-                            "title": "Confidence Threshold",
-                            "default": 0.4,
-                            "type": "number"
                         }
                     }
                 }
