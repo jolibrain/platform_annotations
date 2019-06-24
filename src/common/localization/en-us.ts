@@ -92,7 +92,7 @@ export const english: IAppStrings = {
         },
         targetConnection: {
             title: "Target Connection",
-            description: "Where to save the project and exported data",
+            description: "Where to save the project and exported data - Best practice: use same as Source Connection",
         },
         videoSettings: {
             title: "Video Settings",
