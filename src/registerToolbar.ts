@@ -65,15 +65,6 @@ export default function registerToolbar() {
     });
 
     ToolbarItemFactory.register({
-        name: ToolbarItemName.DrawFullFrame,
-        tooltip: strings.editorPage.toolbar.drawFullFrame,
-        icon: "fa-compress",
-        group: ToolbarItemGroup.Canvas,
-        type: ToolbarItemType.State,
-        accelerators: ["F", "f"],
-    });
-
-    ToolbarItemFactory.register({
         name: ToolbarItemName.CopyRectangle,
         tooltip: strings.editorPage.toolbar.copyRectangle,
         icon: "far fa-clone",
@@ -169,6 +160,16 @@ export default function registerToolbar() {
         icon: "fas fa-file-upload",
         group: ToolbarItemGroup.Project,
         type: ToolbarItemType.Action,
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DrawFullFrame,
+        tooltip: strings.editorPage.toolbar.drawFullFrame,
+        icon: "fa-compress",
+        text: "Tag Full Frame",
+        group: ToolbarItemGroup.DeepDetect,
+        type: ToolbarItemType.Action,
+        accelerators: ["F", "f"],
     });
 
     ToolbarItemFactory.register({
