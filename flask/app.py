@@ -3,6 +3,7 @@ import errno
 import os
 import json
 import shutil
+import re
 
 app = Flask(__name__, static_url_path='')
 
@@ -91,7 +92,7 @@ def detection_task():
                     * classname: class associated with this region
                     * xmin, ymin, xmax, ymax: coodonates of this region
 
-    A *deepdetect_classes.txt* file will be created to store the region
+    A *detection/corresp.txt* file will be created to store the region
     classname indexes in order to have the same index for each region classname
     in each image training file.
 
@@ -104,7 +105,7 @@ def detection_task():
     For example, if there is a *dog* region in *client/images/dog.jpg* file with
     the following coordonates [xmin: 0, ymin: 0, xmax: 100, ymax: 100}
 
-    * *client/images/detection/deepdetect_classes.txt* will be created, with the
+    * *client/images/detection/corresp.txt* will be created, with the
         following content:
 
     dog
@@ -126,8 +127,9 @@ def detection_task():
 
     srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
-    bboxPath = os.path.join(srcPath, 'detection', 'bbox')
-    imagePath = os.path.join(srcPath, 'detection', 'img')
+    detectionPath = os.path.join(srcPath, 'detection')
+    bboxPath = os.path.join(detectionPath, 'bbox')
+    imagePath = os.path.join(detectionPath, 'img')
 
     try:
         os.makedirs(bboxPath)
@@ -162,14 +164,16 @@ def detection_task():
             os.path.join(imagePath, filename)
         )
 
-    classDescriptionFile = os.path.join(srcPath, 'deepdetect_classes.txt')
+    classDescriptionFile = os.path.join(detectionPath, 'corresp.txt')
 
     # File doesn't exist, create it
     if os.path.exists(classDescriptionFile) is False:
-        open(classDescriptionFile, 'a').close()
+        f = open(classDescriptionFile, 'a')
+        f.write("0 none\n")
+        f.close()
 
     # Get existing classes from class description file
-    classDescriptions = [line.rstrip() for line in open(classDescriptionFile)]
+    classDescriptions = [re.sub(r'^\d+\s+', '', line.rstrip()) for line in open(classDescriptionFile)]
 
     # For each region, add class_number attribute
     # that can be found in class description file
@@ -180,7 +184,7 @@ def detection_task():
         if region['classname'] not in classDescriptions:
             classDescriptions.append(classname)
 
-        region['class_number'] = classDescriptions.index(classname) + 1
+        region['class_number'] = classDescriptions.index(classname)
 
 
     # create bbox file
@@ -197,8 +201,8 @@ def detection_task():
 
     # write class description file
     with open(classDescriptionFile, 'w') as f:
-        for item in classDescriptions:
-            f.write("%s\n" % item)
+        for counter, item in enumerate(classDescriptions):
+            f.write("%i %s\n" % (counter, item))
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
