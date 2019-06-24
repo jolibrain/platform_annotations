@@ -656,6 +656,8 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
           break;
       }
 
+      toast.success(strings.editorPage.messages.saveAssetToDeepDetect);
+
     }
 
     private onBeforeAssetSelected = (): boolean => {

@@ -299,6 +299,7 @@ export const spanish: IAppStrings = {
                 description: "1 o más regiones no se han etiquetado.  \
                     Por favor, etiquete todas las regiones antes de continuar con el siguiente activo.",
             },
+            saveAssetToDeepDetect: 'Successfully saved on DeepDetect Platform',
         },
     },
     export: {

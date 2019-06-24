@@ -296,6 +296,7 @@ export const english: IAppStrings = {
                 description: "1 or more regions have not been tagged.  Ensure all regions are tagged before \
                     continuing to next asset.",
             },
+            saveAssetToDeepDetect: 'Successfully saved on DeepDetect Platform',
         },
     },
     export: {
