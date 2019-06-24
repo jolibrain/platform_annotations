@@ -28,7 +28,7 @@ export interface IProjectService {
 const defaultActiveLearningSettings: IActiveLearningSettings = {
     autoDetect: false,
     predictTag: true,
-    modelPathType: ModelPathType.Coco,
+    modelPathType: ModelPathType.Deepdetect,
 };
 
 const defaultExportOptions: IExportFormat = {

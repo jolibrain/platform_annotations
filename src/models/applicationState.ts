@@ -211,10 +211,10 @@ export interface IProjectVideoSettings {
  * @member DeepDetect - Specifies to load a model from a deepdetect server
  */
 export enum ModelPathType {
+    DeepDetect = "deepdetect",
     Coco = "coco",
     File = "file",
     Url = "url",
-    DeepDetect = "deepdetect",
 }
 
 /**
