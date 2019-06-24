@@ -23,6 +23,7 @@ export const spanish: IAppStrings = {
         close: "Cerrar",
     },
     homePage: {
+        newConnection: "Nueva Conexión",
         newProject: "Nuevo Proyecto",
         recentProjects: "Proyectos Recientes",
         openLocalProject: {
@@ -30,7 +31,7 @@ export const spanish: IAppStrings = {
         },
         openCloudProject: {
             title: "Abrir Proyecto de la Nube",
-            selectConnection: "Select a Connection",
+            selectConnection: "Seleccionar la conexion",
         },
         deleteProject: {
             title: "Borrar Proyecto",

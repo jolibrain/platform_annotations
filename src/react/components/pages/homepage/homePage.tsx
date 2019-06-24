@@ -67,35 +67,16 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
                 <div className="app-homepage-main">
                     <ul>
                         <li>
+                            <a href="#" onClick={this.createNewConnection} className="p-5 new-connection">
+                                <i className="fas fa-plug fa-9x"></i>
+                                <h6>{strings.homePage.newConnection}</h6>
+                            </a>
+                        </li>
+                        <li>
                             <a href="#" onClick={this.createNewProject} className="p-5 new-project">
                                 <i className="fas fa-folder-plus fa-9x"></i>
                                 <h6>{strings.homePage.newProject}</h6>
                             </a>
-                        </li>
-                        {isElectron() &&
-                            <li>
-                                <a href="#" className="p-5 file-upload"
-                                    onClick={() => this.filePicker.current.upload()} >
-                                    <i className="fas fa-folder-open fa-9x"></i>
-                                    <h6>{strings.homePage.openLocalProject.title}</h6>
-                                </a>
-                                <FilePicker ref={this.filePicker}
-                                    onChange={this.onProjectFileUpload}
-                                    onError={this.onProjectFileUploadError} />
-                            </li>
-                        }
-                        <li>
-                            {/*Open Cloud Project*/}
-                            <a href="#" onClick={this.handleOpenCloudProjectClick} className="p-5 cloud-open-project">
-                                <i className="fas fa-cloud fa-9x"></i>
-                                <h6>{strings.homePage.openCloudProject.title}</h6>
-                            </a>
-                            <CloudFilePicker
-                                ref={this.cloudFilePicker}
-                                connections={this.props.connections}
-                                onSubmit={(content) => this.loadSelectedProject(JSON.parse(content))}
-                                fileExtension={constants.projectFileExtension}
-                            />
                         </li>
                     </ul>
                 </div>
@@ -127,6 +108,13 @@ export default class HomePage extends React.Component<IHomePageProps, IHomePageS
     private createNewProject = (e: SyntheticEvent) => {
         this.props.actions.closeProject();
         this.props.history.push("/projects/create");
+
+        e.preventDefault();
+    }
+
+    private createNewConnection = (e: SyntheticEvent) => {
+        this.props.actions.closeProject();
+        this.props.history.push("/connections/create");
 
         e.preventDefault();
     }

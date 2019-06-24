@@ -23,6 +23,7 @@ export const english: IAppStrings = {
         close: "Close",
     },
     homePage: {
+        newConnection: "New Connection",
         newProject: "New Project",
         openLocalProject: {
             title: "Open Local Project",
@@ -210,8 +211,8 @@ export const english: IAppStrings = {
               containerName: "Data Storage Location - ex. if data stored in /opt/platform/data/client/images/ then input must be /client/images/ - required",
                 modelType: {
                   title: "Model type",
-                  classification: "Classification",
-                  detection: "Detection"
+                  classification: "Classification (tags)",
+                  detection: "Detection (bounding boxes)"
                 }
             },
             local: {

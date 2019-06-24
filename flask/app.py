@@ -50,7 +50,7 @@ def classification_task():
             raise
 
     # check content attribute in item param from http request
-    if 'content' in item:
+    if 'content' in item and item['content'] is not None:
 
         # Write new file in classname folder with request content
         g = open(os.path.join(dstPath, filename), "w")
@@ -146,7 +146,7 @@ def detection_task():
             raise
 
     # check content attribute in item param from http request
-    if 'content' in item:
+    if 'content' in item and item['content'] is not None:
 
         # Write new file in classname folder with request content
         g = open(os.path.join(imagePath, filename), "w")

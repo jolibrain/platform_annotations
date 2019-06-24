@@ -155,14 +155,6 @@ export default function registerToolbar() {
     }, ExportProject);
 
     ToolbarItemFactory.register({
-        name: ToolbarItemName.ExportDeepDetect,
-        tooltip: strings.editorPage.toolbar.exportDeepDetect,
-        icon: "fas fa-file-upload",
-        group: ToolbarItemGroup.Project,
-        type: ToolbarItemType.Action,
-    });
-
-    ToolbarItemFactory.register({
         name: ToolbarItemName.DrawFullFrame,
         tooltip: strings.editorPage.toolbar.drawFullFrame,
         icon: "fa-compress",

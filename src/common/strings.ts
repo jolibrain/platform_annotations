@@ -26,6 +26,7 @@ export interface IAppStrings {
         close: string;
     };
     homePage: {
+        newConnection: string;
         newProject: string;
         openLocalProject: {
             title: string;
