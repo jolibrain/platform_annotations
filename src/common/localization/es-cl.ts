@@ -249,6 +249,7 @@ export const spanish: IAppStrings = {
             activeLearning: "Aprendizaje Activo",
             exportDeepDetect: "Export to DeepDetect Platform",
             deepdetectPredict: "Predict with DeepDetect",
+            deepdetectRemoveUnlabelled: "Remove Unlabelled Regions",
             deepdetectValidate: "Export to DeepDetect Platform",
             deepdetectNext: "Next Image/Frame",
         },

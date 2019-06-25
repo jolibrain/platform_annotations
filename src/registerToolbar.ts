@@ -21,6 +21,7 @@ export enum ToolbarItemName {
     ActiveLearning = "activeLearning",
     ExportDeepDetect = "exportDeepDetect",
     DeepDetectPredict = "deepdetectPredict",
+    DeepDetectRemoveUnlabelled = "deepdetectRemoveUnlabelled",
     DeepDetectValidate = "deepdetectValidate",
     DeepDetectNext = "deepdetectNext",
 }
@@ -169,6 +170,15 @@ export default function registerToolbar() {
         tooltip: strings.editorPage.toolbar.deepdetectPredict,
         icon: "fas fa-cube",
         text: "Predict",
+        group: ToolbarItemGroup.DeepDetect,
+        type: ToolbarItemType.Action,
+    });
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.DeepDetectRemoveUnlabelled,
+        tooltip: strings.editorPage.toolbar.deepdetectRemoveUnlabelled,
+        icon: "fas fa-ban",
+        text: "Remove Unlabelled Regions",
         group: ToolbarItemGroup.DeepDetect,
         type: ToolbarItemType.Action,
     });

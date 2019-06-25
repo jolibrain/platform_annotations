@@ -240,6 +240,16 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
         this.deleteRegionsFromAsset(this.state.currentAsset.regions);
     }
 
+    public removeUnlabelled = () => {
+        const regions = this.state.currentAsset.regions;
+      console.log(regions);
+        const ids = regions.map((r) => r.id);
+        for (const id of ids) {
+          //this.editor.RM.deleteRegionById(id);
+        }
+      //this.deleteRegionsFromAsset(this.state.currentAsset.regions);
+    }
+
     private addRegions = (regions: IRegion[]) => {
         this.addRegionsToCanvasTools(regions);
         this.addRegionsToAsset(regions);

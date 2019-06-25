@@ -246,6 +246,7 @@ export interface IAppStrings {
             activeLearning: string;
             exportDeepDetect: string;
             deepdetectPredict: string;
+            deepdetectRemoveUnlabelled: string;
             deepdetectValidate: string;
             deepdetectNext: string;
         }

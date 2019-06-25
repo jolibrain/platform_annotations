@@ -247,6 +247,7 @@ export const english: IAppStrings = {
             activeLearning: "Active Learning",
             exportDeepDetect: "Export to DeepDetect Platform",
             deepdetectPredict: "Predict with DeepDetect",
+            deepdetectRemoveUnlabelled: "Remove Unlabelled Regions",
             deepdetectValidate: "Export to DeepDetect Platform",
             deepdetectNext: "Next Image/Frame",
         },
