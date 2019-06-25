@@ -69,7 +69,11 @@ export class WebAutoIndexJson implements IAssetProvider {
       const filepath = path.join(this.writePath, this.options.containerName, blobName);
       await axios.delete(filepath)
         .then( (response) => {
-          axios.post(filepath, content);
+          try {
+            axios.post(filepath, content);
+          } catch(err) {
+            // conflict error on post request
+          }
         });
     }
 
