@@ -243,7 +243,7 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
     public removeUnlabelled = () => {
         const regions = this.state.currentAsset.regions;
         const unlabelledRegions = regions.filter( r => {
-          return r.tags.length === 0 || r.tags.every(t => Number.isInteger(t));
+          return r.tags.length === 0 || r.tags.every(t => Number.isInteger(parseInt(t)));
         });
         const ids = unlabelledRegions.map((r) => r.id);
         for (const id of ids) {
