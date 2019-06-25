@@ -564,10 +564,10 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                 break;
             case ToolbarItemName.ActiveLearning:
             case ToolbarItemName.DeepDetectPredict:
-                this.canvas.current.removeUnlabelled();
+                await this.predictRegions();
                 break;
             case ToolbarItemName.DeepDetectRemoveUnlabelled:
-                await this.predictRegions();
+                this.canvas.current.removeUnlabelled();
                 break;
             case ToolbarItemName.DeepDetectValidate:
                 await this.saveAssetToDeepDetect();
