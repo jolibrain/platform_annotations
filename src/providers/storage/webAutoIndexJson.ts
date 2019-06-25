@@ -67,7 +67,7 @@ export class WebAutoIndexJson implements IAssetProvider {
      */
     public async writeText(blobName: string, content: string | Buffer) {
       const filepath = path.join(this.writePath, this.options.containerName, blobName);
-      await axios.delete(filepath, (req, res) => {
+      await axios.delete(filepath, async (req, res) => {
         await axios.post(filepath, content);
       });
     }
