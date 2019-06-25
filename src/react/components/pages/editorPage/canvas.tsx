@@ -245,7 +245,7 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
         const unlabelledRegions = regions.filter( r => {
           return r.tags.length === 0 || r.tags.every(t => Number.isInteger(t));
         });
-        const ids = regions.map((r) => r.id);
+        const ids = unlabelledRegions.map((r) => r.id);
         for (const id of ids) {
           this.editor.RM.deleteRegionById(id);
         }
