@@ -72,7 +72,7 @@ export class WebAutoIndexJson implements IAssetProvider {
       await axios.post(filepath, content)
         .catch(err => {
           // conflict error on post request
-        }
+        });
     }
 
     /**
