@@ -184,6 +184,7 @@ export default class Canvas extends React.Component<ICanvasProps, ICanvasState> 
             RegionDataType.Rect);
         const regions = [CanvasHelpers.fromRegionData(fullFrameRegion, RegionType.Rectangle)];
         this.addRegions(regions);
+        this.props.onSelectedRegionsChanged(regions);
     }
 
 
