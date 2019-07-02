@@ -102,6 +102,9 @@ def detection_task():
 
         class_idx xmin ymin xmax ymax
 
+    A *detection/train.txt* file will be created to store the image path with
+    its associated bounding box file.
+
     For example, if there is a *dog* region in *client/images/dog.jpg* file with
     the following coordonates [xmin: 0, ymin: 0, xmax: 100, ymax: 100}
 
@@ -115,6 +118,10 @@ def detection_task():
         with the following content:
 
     1 0 0 100 100
+    * *client/images/detection/train.txt* will be created with the following
+        content:
+
+    /opt/platform/data/client/images/detection/img/dog.jpg /opt/platform/data/client/images/detection/bbox/dog.txt
     """
     data = request.data
     dataDict = json.loads(data)
@@ -165,11 +172,17 @@ def detection_task():
         )
 
     classDescriptionFile = os.path.join(detectionPath, 'corresp.txt')
+    trainFile = os.path.join(detectionPath, 'train.txt')
 
-    # File doesn't exist, create it
+    # If class description file  doesn't exist, create it
     if os.path.exists(classDescriptionFile) is False:
         f = open(classDescriptionFile, 'a')
         f.write("0 none\n")
+        f.close()
+
+    # If train file  doesn't exist, create it
+    if os.path.exists(trainFile) is False:
+        f = open(trainFile, 'a')
         f.close()
 
     # Get existing classes from class description file
@@ -189,7 +202,8 @@ def detection_task():
 
     # create bbox file
     basename, file_extension = os.path.splitext(filename)
-    with open(os.path.join(bboxPath, basename + '.txt'), 'w') as f:
+    bboxFile = os.path.join(bboxPath, basename + '.txt')
+    with open(bboxFile, 'w') as f:
         for region in regions:
               f.write("{0} {1} {2} {3} {4}\n".format(
                   int(region['class_number']),
@@ -203,6 +217,10 @@ def detection_task():
     with open(classDescriptionFile, 'w') as f:
         for counter, item in enumerate(classDescriptions):
             f.write("%i %s\n" % (counter, item))
+
+    # write train file
+    with open(trainFile, 'w') as f:
+        f.write("%s %s\n" % (os.path.join(imagePath, filename), bboxFile))
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
