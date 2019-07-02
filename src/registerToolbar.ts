@@ -44,7 +44,6 @@ export default function registerToolbar() {
         icon: "fa-mouse-pointer",
         group: ToolbarItemGroup.Canvas,
         type: ToolbarItemType.State,
-        accelerators: ["V", "v"],
     });
 
     ToolbarItemFactory.register({
@@ -190,6 +189,7 @@ export default function registerToolbar() {
         text: "Validate",
         group: ToolbarItemGroup.DeepDetect,
         type: ToolbarItemType.Action,
+        accelerators: ["V", "v"],
     });
 
 }
