@@ -219,7 +219,7 @@ def detection_task():
             f.write("%i %s\n" % (counter, item))
 
     # write train file
-    with open(trainFile, 'w') as f:
+    with open(trainFile, 'a') as f:
         f.write("%s %s\n" % (os.path.join(imagePath, filename), bboxFile))
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
