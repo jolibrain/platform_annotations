@@ -249,6 +249,7 @@ export interface IAppStrings {
             deepdetectRemoveUnlabelled: string;
             deepdetectValidate: string;
             deepdetectNext: string;
+            selectAllAssets: string;
         }
         videoPlayer: {
             nextTaggedFrame: {

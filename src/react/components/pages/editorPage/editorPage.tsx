@@ -575,6 +575,9 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
             case ToolbarItemName.DeepDetectNext:
                 await this.goToNextResource();
                 break;
+            case ToolbarItemName.SelectAllAssets:
+                await this.selectAllAssets();
+                break;
         }
     }
 
@@ -661,6 +664,12 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
 
       toast.success(strings.editorPage.messages.saveAssetToDeepDetect);
 
+    }
+
+    private selectAllAssets = async () => {
+      this.state.assets.forEach( async (asset) => {
+        await this.selectAsset(asset);
+      });
     }
 
     private onBeforeAssetSelected = (): boolean => {

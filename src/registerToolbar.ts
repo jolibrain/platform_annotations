@@ -24,6 +24,7 @@ export enum ToolbarItemName {
     DeepDetectRemoveUnlabelled = "deepdetectRemoveUnlabelled",
     DeepDetectValidate = "deepdetectValidate",
     DeepDetectNext = "deepdetectNext",
+    SelectAllAssets = "selectAllAssets",
 }
 
 export enum ToolbarItemGroup {
@@ -153,6 +154,15 @@ export default function registerToolbar() {
         type: ToolbarItemType.Action,
         accelerators: ["CmdOrCtrl+E", "CmdOrCtrl+e"],
     }, ExportProject);
+
+    ToolbarItemFactory.register({
+        name: ToolbarItemName.SelectAllAssets,
+        tooltip: strings.editorPage.toolbar.selectAllAssets,
+        icon: "fas fa-hashtag",
+        text: "Load Assets State",
+        group: ToolbarItemGroup.DeepDetect,
+        type: ToolbarItemType.Action,
+    });
 
     ToolbarItemFactory.register({
         name: ToolbarItemName.DrawFullFrame,

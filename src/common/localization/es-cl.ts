@@ -252,6 +252,7 @@ export const spanish: IAppStrings = {
             deepdetectRemoveUnlabelled: "Remove Unlabelled Regions",
             deepdetectValidate: "Export to DeepDetect Platform",
             deepdetectNext: "Next Image/Frame",
+            selectAllAssets: "Select All Assets",
         },
         videoPlayer: {
             previousTaggedFrame: {
