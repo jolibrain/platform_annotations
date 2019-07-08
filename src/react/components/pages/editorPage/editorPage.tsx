@@ -747,9 +747,11 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
     private updateRootAssets = () => {
         const updatedAssets = [...this.state.assets];
         updatedAssets.forEach((asset) => {
-            const projectAsset = this.props.project.assets[asset.id];
-            if (projectAsset) {
-                asset.state = projectAsset.state;
+            if(typeof this.props.project.assets !== 'undefined') {
+              const projectAsset = this.props.project.assets[asset.id];
+              if (projectAsset) {
+                  asset.state = projectAsset.state;
+              }
             }
         });
 
