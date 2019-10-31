@@ -4,6 +4,7 @@ import os
 import json
 import shutil
 import re
+import mmap
 
 app = Flask(__name__, static_url_path='')
 
@@ -220,7 +221,10 @@ def detection_task():
 
     # write train file
     with open(trainFile, 'a') as f:
-        f.write("%s %s\n" % (os.path.join(imagePath, filename), bboxFile))
+        s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+        line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
+        if s.find(line) == -1:
+            f.write(line + "\n")
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
