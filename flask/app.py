@@ -226,6 +226,13 @@ def detection_task():
         if s.find(line) == -1:
             f.write(line + "\n")
 
+    if dataDict['tags'] and len(dataDict['tags']) > 0:
+        vottDescriptionFile = os.path.join(detectionPath, 'corresp_vott.txt')
+        f = open(vottDescriptionFile, 'w')
+        for counter, item in enumerate(dataDict['tags']):
+            f.write("%i %s\n" % (counter, item))
+        f.close()
+
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 app.run(host='0.0.0.0', debug=True)
