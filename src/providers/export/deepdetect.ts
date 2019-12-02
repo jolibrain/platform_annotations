@@ -121,11 +121,21 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         item.filename = item.filename.substr(0, item.filename.lastIndexOf(".")) + ".jpg";
       }
 
+      let tags = [];
+      if(
+        this.assetService &&
+        this.assetService.project &&
+        this.assetService.project.tags &&
+        this.assetService.project.tags.length > 0) {
+        tags = this.assetService.project.tags.map(t => t.name)
+      }
+
       await axios.post(
         'tasks/detection',
         {
           targetDir: containerName,
-          item: item
+          item: item,
+          tags: tags
         }
       );
     }
