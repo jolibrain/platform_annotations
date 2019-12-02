@@ -58,7 +58,7 @@ export abstract class ExportProvider
     <TOptions extends IExportProviderOptions = IExportProviderOptions> implements IExportProvider {
     private storageProviderInstance: IStorageProvider;
     private assetProviderInstance: IAssetProvider;
-    private assetService: AssetService;
+    public assetService: AssetService;
 
     constructor(public project: IProject, protected options?: TOptions) {
         Guard.null(project);
