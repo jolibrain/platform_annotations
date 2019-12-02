@@ -96,7 +96,7 @@ export class AssetService {
     private assetProviderInstance: IAssetProvider;
     private storageProviderInstance: IStorageProvider;
 
-    constructor(private project: IProject) {
+    constructor(public project: IProject) {
         Guard.null(project);
     }
 
