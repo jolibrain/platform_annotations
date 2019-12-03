@@ -221,7 +221,7 @@ def detection_task():
     # write train file
     with open(trainFile, 'r+') as f:
         line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
-        if not line in [l.rstrip() for l in f]
+        if not line in [l.rstrip() for l in f]:
             f.write(line + "\n")
 
     if dataDict['tags'] and len(dataDict['tags']) > 0:
