@@ -1,5 +1,97 @@
 # VoTT (Visual Object Tagging Tool)
 
+## Installation
+
+
+```
+cd ${DD_PLATFORM}/code/
+git clone https://gitlab.com/jolibrain/platform_annotations.git
+
+cd ${DD_PLATFORM}/code/${ARCH}/
+vim docker-compose.yml
+```
+
+In `docker-compose.yml`:
+
+```
+...
+  annotations:
+    container_name: dev_annotations
+    build:
+      context: ../platform_annotations
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - /opt/platform:/opt/platform
+
+  annotation_tasks:
+    container_name: dev_annotation_tasks
+    build:
+      context: ../platform_annotations/flask
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - /opt/platform:/opt/platform
+```
+
+In `config/nginx/nginx.conf`:
+
+```
+...
+
+http {
+
+  ...
+
+  upstream annotation_tasks {
+    least_conn;
+    server annotation_tasks:5000 fail_timeout=0;
+  }
+
+  ...
+
+  server {
+
+    ...
+
+    location ^~ /annotations/tasks/ {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_pass http://annotation_tasks/;
+    }
+
+    location ^~ /annotations/ {
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header Host $host;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_pass http://annotations/;
+    }
+
+    ...
+
+  }
+
+}
+```
+
+Build containers with following command:
+
+```
+docker-compose build annotations annotation_tasks
+```
+
+Run containers:
+
+```
+docker-compose stop nginx annotations annotation_tasks
+docker-compose rm -f -v nginx annotations annotation_tasks
+docker-compose up -d
+```
+
+
+====
+
 [![Build Status](https://dev.azure.com/msft-vott/VoTT/_apis/build/status/VoTT/Microsoft.VoTT?branchName=master)](https://dev.azure.com/msft-vott/VoTT/_build/latest?definitionId=25&branchName=master)
 [![Code Coverage](https://codecov.io/gh/Microsoft/VoTT/branch/master/graph/badge.svg)](https://codecov.io/gh/Microsoft/VoTT)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Microsoft_VoTT&metric=alert_status)](https://sonarcloud.io/dashboard?id=Microsoft_VoTT)
