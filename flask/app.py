@@ -4,7 +4,6 @@ import os
 import json
 import shutil
 import re
-import mmap
 
 app = Flask(__name__, static_url_path='')
 
@@ -220,10 +219,9 @@ def detection_task():
             f.write("%i %s\n" % (counter, item))
 
     # write train file
-    with open(trainFile, 'a') as f:
-        s = mmap.mmap(f.fileno(), 0, access=mmap.ACCESS_READ)
+    with open(trainFile, 'r+') as f:
         line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
-        if s.find(line) == -1:
+        if not line in [l.rstrip() for l in f]
             f.write(line + "\n")
 
     if dataDict['tags'] and len(dataDict['tags']) > 0:
