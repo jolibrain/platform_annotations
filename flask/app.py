@@ -81,6 +81,7 @@ def detection_task():
     Receive HTTP POST request to create training files for detection purpose.
 
     params:
+        * tags: array of tags, ordered as displayed in vott UI
         * targetDir: folder where the file is stored on DeepDetect Platform
             If file is stored in /opt/platform/data/client/images/ then this
             parameter is equal to */client/images/*
@@ -111,13 +112,15 @@ def detection_task():
     * *client/images/detection/corresp.txt* will be created, with the
         following content:
 
-    dog
+    0 none
+    1 dog
 
     * image file will be copied to *client/images/detection/img/dog.jpg*
     * txt training file will be created in *client/images/detection/bbox/dog.txt*
         with the following content:
 
     1 0 0 100 100
+
     * *client/images/detection/train.txt* will be created with the following
         content:
 
@@ -172,17 +175,13 @@ def detection_task():
         )
 
     classDescriptionFile = os.path.join(detectionPath, 'corresp.txt')
-    trainFile = os.path.join(detectionPath, 'train.txt')
 
-    # If class description file  doesn't exist, create it
-    if os.path.exists(classDescriptionFile) is False:
-        f = open(classDescriptionFile, 'a')
+    # create class description file from tags parameter
+    if dataDict['tags'] and len(dataDict['tags']) > 0:
+        f = open(classDescriptionFile, 'w')
         f.write("0 none\n")
-        f.close()
-
-    # If train file  doesn't exist, create it
-    if os.path.exists(trainFile) is False:
-        f = open(trainFile, 'a')
+        for counter, item in enumerate(dataDict['tags']):
+            f.write("%i %s\n" % (counter + 1, item))
         f.close()
 
     # Get existing classes from class description file
@@ -192,12 +191,7 @@ def detection_task():
     # that can be found in class description file
     # WARNING: index begins at 1
     for region in regions:
-        classname = region['classname']
-
-        if region['classname'] not in classDescriptions:
-            classDescriptions.append(classname)
-
-        region['class_number'] = classDescriptions.index(classname)
+        region['class_number'] = classDescriptions.index(region['classname'])
 
 
     # create bbox file
@@ -213,23 +207,12 @@ def detection_task():
                   int(region['ymax'])
               ))
 
-    # write class description file
-    with open(classDescriptionFile, 'w') as f:
-        for counter, item in enumerate(classDescriptions):
-            f.write("%i %s\n" % (counter, item))
-
     # write train file
+    trainFile = os.path.join(detectionPath, 'train.txt')
     with open(trainFile, 'r+') as f:
         line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
         if not line in [l.rstrip() for l in f]:
             f.write(line + "\n")
-
-    if dataDict['tags'] and len(dataDict['tags']) > 0:
-        vottDescriptionFile = os.path.join(detectionPath, 'corresp_vott.txt')
-        f = open(vottDescriptionFile, 'w')
-        for counter, item in enumerate(dataDict['tags']):
-            f.write("%i %s\n" % (counter, item))
-        f.close()
 
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
