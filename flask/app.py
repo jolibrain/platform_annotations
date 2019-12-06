@@ -198,6 +198,13 @@ def detection_task():
     basename, file_extension = os.path.splitext(filename)
     bboxFile = os.path.join(bboxPath, basename + '.txt')
     with open(bboxFile, 'w') as f:
+
+        # write head comment with used tags
+        # avoid issue with un-synchronized corresp.txt file
+        if dataDict['tags'] and len(dataDict['tags']) > 0:
+            f.write('# ' + ' '.join(dataDict['tags']))
+
+        # write regions to file
         for region in regions:
               f.write("{0} {1} {2} {3} {4}\n".format(
                   int(region['class_number']),
