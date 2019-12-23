@@ -197,7 +197,6 @@ def create_app(test_config=None):
 	for region in regions:
 	    region['class_number'] = classDescriptions.index(region['classname'])
 
-
 	# create bbox file
 	basename, file_extension = os.path.splitext(filename)
 	bboxFile = os.path.join(bboxPath, basename + '.txt')
@@ -220,10 +219,18 @@ def create_app(test_config=None):
 
 	# write train file
 	trainFile = os.path.join(detectionPath, 'train.txt')
-	with open(trainFile, 'w+') as f:
-	    line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
-	    if not line in [l.rstrip() for l in f]:
-		f.write(line + "\n")
+        line = "%s %s" % (os.path.join(imagePath, filename), bboxFile)
+        appendToTrain = False
+
+        # Check if train.txt file exists and if it contains the line to be added
+	if os.path.exists(trainFile):
+            with open(trainFile, 'r') as f:
+                appendToTrain = not line in [l.rstrip() for l in f]
+
+        # Write line to train.txt file
+        if not os.path.exists(trainFile) or appendToTrain:
+            with open(trainFile, 'a') as f:
+                    f.write(line + "\n")
 
 	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
