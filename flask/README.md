@@ -3,6 +3,12 @@
 In order to manipulate files on DeepDetect Platform from VoTT client, this
 Flask app define HTTP routes.
 
+## Testing
+
+```
+python -m pytest tests
+```
+
 ## Installation
 
 ### Platform docker
