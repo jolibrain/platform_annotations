@@ -78,6 +78,11 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         item.filename = item.filename.substr(0, item.filename.lastIndexOf(".")) + ".jpg";
       }
 
+      // Append / path suffix if missing
+      if(!containerName.endsWith('/')) {
+        containerName += '/';
+      }
+
       await axios.post(
         'tasks/classification',
         {
@@ -128,6 +133,11 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         this.assetService.project.tags &&
         this.assetService.project.tags.length > 0) {
         tags = this.assetService.project.tags.map(t => t.name)
+      }
+
+      // Append / path suffix if missing
+      if(!containerName.endsWith('/')) {
+        containerName += '/';
       }
 
       await axios.post(

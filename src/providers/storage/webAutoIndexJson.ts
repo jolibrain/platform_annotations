@@ -38,13 +38,6 @@ export class WebAutoIndexJson implements IAssetProvider {
   private writePath: string = "/filebrowser/api/resource";
 
     constructor(private options: IWebAutoIndexJsonOptions) {
-
-      // Check / suffix in container name path
-      // Append / to container name option if missing
-      if(!options.containerName.endsWith('/')) {
-        options.containerName = options.containerName + '/';
-      }
-
         Guard.null(options);
     }
 
@@ -53,7 +46,14 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param blobName - Name of blob in container
      */
     public async readText(blobName: string): Promise<string> {
-      const contentPath = path.join(this.readPath, this.options.containerName, blobName);
+
+      let containerPath = this.options.containerName;
+
+      if(!containerPath.endsWith('/')) {
+        containerPath += '/';
+      }
+
+      const contentPath = path.join(this.readPath, containerPath, blobName);
       const response = await axios.get(contentPath)
       return JSON.stringify(response.data);
     }
@@ -73,7 +73,14 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param content - Content to write to blob (string or Buffer)
      */
     public async writeText(blobName: string, content: string | Buffer) {
-      const filepath = path.join(this.writePath, this.options.containerName, blobName);
+
+      let containerPath = this.options.containerName;
+
+      if(!containerPath.endsWith('/')) {
+        containerPath += '/';
+      }
+
+      const filepath = path.join(this.writePath, containerPath, blobName);
       await axios.delete(filepath);
 
       await axios.post(filepath, content)
@@ -96,7 +103,13 @@ export class WebAutoIndexJson implements IAssetProvider {
      * @param blobName - Name of blob in container
      */
     public async deleteFile(blobName: string): Promise<void> {
-        const filepath = path.join(this.writePath, this.options.containerName, blobName);
+
+      let containerPath = this.options.containerName;
+
+      if(!containerPath.endsWith('/')) {
+        containerPath += '/';
+      }
+        const filepath = path.join(this.writePath, containerPath, blobName);
         await axios.delete(filepath);
     }
 
@@ -110,6 +123,10 @@ export class WebAutoIndexJson implements IAssetProvider {
 
       if(!containerPath)
         return null;
+
+      if(!containerPath.endsWith('/')) {
+        containerPath += '/';
+      }
 
       const response = await axios.get(path.join(this.readPath, containerPath));
 
