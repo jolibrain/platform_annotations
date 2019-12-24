@@ -41,7 +41,7 @@ export class WebAutoIndexJson implements IAssetProvider {
 
       // Check / suffix in container name path
       // Append / to container name option if missing
-      if(!options.containerName.endsWidth('/')) {
+      if(!options.containerName.endsWith('/')) {
         options.containerName = options.containerName + '/';
       }
 
