@@ -46,7 +46,7 @@ def create_app(test_config=None):
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
-        if 'projectName' in dataDict:
+        if 'projectName' in dataDict and len(dataDict['projectName']) > 0:
             projectName = dataDict['projectName']
             dstPath = os.path.join(srcPath, 'train', projectName, classname)
         else:
@@ -152,7 +152,7 @@ def create_app(test_config=None):
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
-        if 'projectName' in dataDict:
+        if 'projectName' in dataDict and len(dataDict['projectName']) > 0:
             projectName = dataDict['projectName']
 	    detectionPath = os.path.join(srcPath, projectName, 'detection')
         else:
