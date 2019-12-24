@@ -171,7 +171,14 @@ export class WebAutoIndexJson implements IAssetProvider {
      * Retrieves assets from Web AutoIndex JSON based on options provided
      */
     public async getAssets(): Promise<IAsset[]> {
-      const response = await axios.get(path.join(this.readPath, this.options.containerName));
+
+      let containerPath = this.options.containerName;
+
+      if(!containerPath.endsWith('/')) {
+        containerPath += '/';
+      }
+
+      const response = await axios.get(path.join(this.readPath, containerPath));
 
       const items = response.data
       .filter(f => f.type === 'file')
