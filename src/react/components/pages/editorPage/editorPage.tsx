@@ -548,6 +548,7 @@ export default class EditorPage extends React.Component<IEditorPageProps, IEdito
                 await this.goToRootAsset(-1);
                 break;
             case ToolbarItemName.NextAsset:
+                await this.saveAssetToDeepDetect();
                 await this.goToRootAsset(1);
                 break;
             case ToolbarItemName.CopyRegions:
