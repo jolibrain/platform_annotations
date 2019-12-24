@@ -85,17 +85,19 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
 
       // project name must be used in targetted dir path
       // in order to use the same image path in various projects
+      let projectName = ""
       if(
         this.assetService &&
         this.assetService.project &&
         this.assetService.project.name ) {
-        containerName = containerName + this.assetService.project.name + '/'
+        projectName = this.assetService.project.name;
       }
 
       await axios.post(
         'tasks/classification',
         {
           targetDir: containerName,
+          projectName: projectName,
           item: item
         }
       );
@@ -142,11 +144,12 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
 
       // project name must be used in targetted dir path
       // in order to use the same image path in various projects
+      let projectName = ""
       if(
         this.assetService &&
         this.assetService.project &&
         this.assetService.project.name ) {
-        containerName = containerName + this.assetService.project.name + '/'
+        projectName = this.assetService.project.name;
       }
 
       let tags = [];
@@ -162,6 +165,7 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         'tasks/detection',
         {
           targetDir: containerName,
+          projectName: projectName,
           item: item,
           tags: tags
         }

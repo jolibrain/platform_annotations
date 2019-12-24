@@ -24,6 +24,9 @@ def create_app(test_config=None):
 	    * targetDir: folder where the file is stored on DeepDetect Platform
 		If file is stored in /opt/platform/data/client/images/ then this
 		parameter is equal to */client/images/*
+	    * projectName: project name to use in order to save content in folder
+                in use by this project. It avoids issue when same images are used
+                in multiple projects
 	    * item: image file to process
 		* filename: image filename
 		* content: image base64 content
@@ -42,7 +45,12 @@ def create_app(test_config=None):
 	classname = item['classname'].decode('utf-8')
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
-	dstPath = os.path.join(srcPath, 'train', classname)
+
+        if 'projectName' in dataDict:
+            projectName = dataDict['projectName']
+            dstPath = os.path.join(srcPath, 'train', projectName, classname)
+        else:
+            dstPath = os.path.join(srcPath, 'train', classname)
 
 	try:
 	    os.makedirs(dstPath)
@@ -89,6 +97,9 @@ def create_app(test_config=None):
 	    * targetDir: folder where the file is stored on DeepDetect Platform
 		If file is stored in /opt/platform/data/client/images/ then this
 		parameter is equal to */client/images/*
+	    * projectName: project name to use in order to save content in folder
+                in use by this project. It avoids issue when same images are used
+                in multiple projects
 	    * item: image file to process
 		* filename: image filename
 		* content: image base64 content
@@ -141,7 +152,12 @@ def create_app(test_config=None):
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
-	detectionPath = os.path.join(srcPath, 'detection')
+        if 'projectName' in dataDict:
+            projectName = dataDict['projectName']
+	    detectionPath = os.path.join(srcPath, projectName, 'detection')
+        else:
+	    detectionPath = os.path.join(srcPath, 'detection')
+
 	bboxPath = os.path.join(detectionPath, 'bbox')
 	imagePath = os.path.join(detectionPath, 'img')
 
