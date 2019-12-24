@@ -83,6 +83,8 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         containerName += '/';
       }
 
+      // project name must be used in targetted dir path
+      // in order to use the same image path in various projects
       if(
         this.assetService &&
         this.assetService.project &&
@@ -138,6 +140,8 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         containerName += '/';
       }
 
+      // project name must be used in targetted dir path
+      // in order to use the same image path in various projects
       if(
         this.assetService &&
         this.assetService.project &&
