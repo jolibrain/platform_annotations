@@ -38,6 +38,13 @@ export class WebAutoIndexJson implements IAssetProvider {
   private writePath: string = "/filebrowser/api/resource";
 
     constructor(private options: IWebAutoIndexJsonOptions) {
+
+      // Check / suffix in container name path
+      // Append / to container name option if missing
+      if(!options.containerName.endsWidth('/')) {
+        options.containerName = options.containerName + '/';
+      }
+
         Guard.null(options);
     }
 
