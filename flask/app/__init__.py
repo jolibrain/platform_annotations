@@ -109,7 +109,6 @@ def create_app(test_config=None):
 	Receive HTTP POST request to create training files for detection purpose.
 
 	params:
-	    * tags: array of tags, ordered as displayed in vott UI
 	    * targetDir: folder where the file is stored on DeepDetect Platform
 		If file is stored in /opt/platform/data/client/images/ then this
 		parameter is equal to */client/images/*
@@ -231,13 +230,11 @@ def create_app(test_config=None):
 
 	classDescriptionFile = os.path.join(detectionPath, 'corresp.txt')
 
-	# create class description file from tags parameter
-	if dataDict['tags'] and len(dataDict['tags']) > 0:
-	    f = open(classDescriptionFile, 'w')
-	    f.write("0 none\n")
-	    for counter, item in enumerate(dataDict['tags']):
-		f.write("%i %s\n" % (counter + 1, item))
-	    f.close()
+        # create empty corresp.txt if it does not exists
+	if not os.path.exists(classDescriptionFile):
+            f = open(classDescriptionFile, 'w')
+            f.write("0 none\n")
+            f.close()
 
 	# Get existing classes from class description file
 	classDescriptions = [re.sub(r'^\d+\s+', '', line.rstrip()) for line in open(classDescriptionFile)]
@@ -246,21 +243,17 @@ def create_app(test_config=None):
 	# that can be found in class description file
 	# WARNING: index begins at 1
 	for region in regions:
-	    region['class_number'] = classDescriptions.index(region['classname'])
+
+            # append classname to class description if not already present
+            if region['classname'] not in classDescriptions:
+                classDescriptions.append(region['classname'])
+
+            region['class_number'] = classDescriptions.index(region['classname'])
 
 	# create bbox file
 	basename, file_extension = os.path.splitext(filename)
 	bboxFile = os.path.join(bboxPath, basename + '.txt')
 	with open(bboxFile, 'w') as f:
-
-            # INVALID - dd_widgets/utils.py must be modified
-            # in order to accept this modification of bbox file format
-            #
-	    # write head comment with used tags
-	    # avoid issue with un-synchronized corresp.txt file
-            #
-	    # if dataDict['tags'] and len(dataDict['tags']) > 0:
-	    #	f.write("# %s\n" % ' '.join(dataDict['tags']))
 
 	    # write regions to file
 	    for region in regions:
@@ -286,6 +279,11 @@ def create_app(test_config=None):
         if not os.path.exists(trainFile) or appendToTrain:
             with open(trainFile, 'a') as f:
                     f.write(line + "\n")
+
+        # write class descriptions to corresp.txt
+        with open(classDescriptionFile, 'w') as f:
+            for counter, item in enumerate(classDescriptions):
+                f.write("%i %s\n" % (counter, item))
 
 	return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 

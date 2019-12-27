@@ -54,7 +54,6 @@ def test_detection(client):
 
     # Create detection test parameters
     detection_data = {
-        'tags': ['zone1', 'zone2'],
         'targetDir': '/client/images/',
         'item': {
             'filename': 'dog.jpg',
@@ -91,6 +90,7 @@ def test_detection(client):
     assert os.path.exists(dstFile)
     assert os.path.exists(dstBbox)
     assert os.path.exists(dstCorresp)
+    assert os.path.exists(dstTrain)
 
     assert filecmp.cmp(dstBbox, "tests/assets/detection/bbox.txt")
     assert filecmp.cmp(dstCorresp, "tests/assets/detection/corresp.txt")
@@ -152,7 +152,6 @@ def test_detection_with_project_name(client):
 
     # Create detection test parameters
     detection_data = {
-        'tags': ['zone1', 'zone2'],
         'targetDir': '/client/images/',
         'projectName': 'custom',
         'item': {
@@ -269,7 +268,6 @@ def test_detection_multi_tags(client):
 
     # Create detection test parameters
     detection_data = {
-        'tags': ['zone1', 'zone2', 'zone3'],
         'targetDir': '/client/images/',
         'item': {
             'filename': 'dog.jpg',
@@ -310,7 +308,6 @@ def test_detection_multi_tags(client):
 
     # Create detection test parameters
     detection_data = {
-        'tags': ['zone1', 'zone2', 'zone3'],
         'targetDir': '/client/images/',
         'item': {
             'filename': 'cat.jpg',
@@ -371,7 +368,6 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'tags': ['zone1', 'zone2', 'zone3'],
             'item': {
                 'filename': 'dog.jpg',
                 'regions': [
@@ -407,7 +403,6 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'tags': ['zone1', 'zone2', 'zone3'],
             'targetDir': '/client/images/'
         })
     )
@@ -425,7 +420,6 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'tags': ['zone1', 'zone2', 'zone3'],
             'targetDir': '/client/images/',
             'item': {
                 'regions': [
@@ -461,7 +455,6 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'tags': ['zone1', 'zone2', 'zone3'],
             'targetDir': '/client/images/',
             'item': {
                 'filename': 'invalid_dog.jpg',
