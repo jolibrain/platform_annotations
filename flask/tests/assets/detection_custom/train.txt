@@ -1,0 +1,1 @@
+/opt/platform/data/client/images/detection/custom/img/dog.jpg /opt/platform/data/client/images/detection/custom/bbox/dog.txt

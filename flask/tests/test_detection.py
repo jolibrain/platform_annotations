@@ -105,6 +105,105 @@ def test_detection(client):
 
 
 # Test detection task on simple image file
+def test_detection_with_project_name(client):
+
+    # Root for detection project
+    dstPath = '/opt/platform/data/client/images/'
+
+    # Source file
+    srcFile = "tests/assets/dog.jpg"
+
+    # Dest file
+    dstFile = os.path.join(dstPath, 'detection', 'custom', 'img', 'dog.jpg')
+    dstBbox = os.path.join(dstPath, 'detection', 'custom', 'bbox', 'dog.txt')
+    dstCorresp = os.path.join(dstPath, 'detection', 'custom', 'corresp.txt')
+    dstTrain = os.path.join(dstPath, 'detection', 'custom', 'train.txt')
+
+    try:
+        os.unlink(dstFile)
+    except:
+        pass
+
+    try:
+        os.unlink(dstBbox)
+    except:
+        pass
+
+    try:
+        os.unlink(dstCorresp)
+    except:
+        pass
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstPath)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstPath):
+            pass
+        else:
+            raise
+
+    # verify test file doesn't already exists in project path
+    assert not os.path.exists(dstFile)
+
+    # Copy test asset inside project root path
+    copyfile(srcFile, os.path.join(dstPath, 'dog.jpg'))
+    assert os.path.exists(os.path.join(dstPath, 'dog.jpg'))
+
+    # Create detection test parameters
+    detection_data = {
+        'tags': ['zone1', 'zone2'],
+        'targetDir': '/client/images/',
+        'projectName': 'custom',
+        'item': {
+            'filename': 'dog.jpg',
+            'regions': [
+                {
+                    'classname': 'zone1',
+                    'xmin': 0,
+                    'xmax': 100,
+                    'ymin': 0,
+                    'ymax': 100
+                },
+                {
+                    'classname': 'zone2',
+                    'xmin': 0,
+                    'xmax': 100,
+                    'ymin': 0,
+                    'ymax': 100
+                }
+            ]
+        }
+    }
+
+    # Request flask app on detection task with test parameters
+    response = client.post(
+        '/detection',
+        data=json.dumps(detection_data)
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert data['success']
+    assert os.path.exists(dstFile)
+    assert os.path.exists(dstBbox)
+    assert os.path.exists(dstCorresp)
+
+    assert filecmp.cmp(dstBbox, "tests/assets/detection_custom/bbox.txt")
+    assert filecmp.cmp(dstCorresp, "tests/assets/detection_custom/corresp.txt")
+    assert filecmp.cmp(dstTrain, "tests/assets/detection_custom/train.txt")
+
+    # Clean test data
+    os.unlink(dstFile)
+    os.unlink(dstBbox)
+    os.unlink(dstCorresp)
+    os.unlink(dstTrain)
+
+
+
+# Test detection task on simple image file
 # and use different tags on second request
 def test_detection_multi_tags(client):
 
@@ -260,3 +359,135 @@ def test_detection_multi_tags(client):
     os.unlink(dstBboxCat)
     os.unlink(dstCorresp)
     os.unlink(dstTrain)
+
+
+
+# Test detection task input validation
+def test_detection_validate_input(client):
+
+    #
+    # Invalid targetDir
+    #
+    response = client.post(
+        '/detection',
+        data=json.dumps({
+            'tags': ['zone1', 'zone2', 'zone3'],
+            'item': {
+                'filename': 'dog.jpg',
+                'regions': [
+                    {
+                        'classname': 'zone1',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    },
+                    {
+                        'classname': 'zone2',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    }
+                ]
+            }
+        })
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert not data['success']
+    assert data['message'] == "Invalid targetDir"
+
+    #
+    # Invalid item parameter
+    #
+    response = client.post(
+        '/detection',
+        data=json.dumps({
+            'tags': ['zone1', 'zone2', 'zone3'],
+            'targetDir': '/client/images/'
+        })
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert not data['success']
+    assert data['message'] == "Invalid item parameter"
+
+    #
+    # Invalid filename parameter
+    #
+    response = client.post(
+        '/detection',
+        data=json.dumps({
+            'tags': ['zone1', 'zone2', 'zone3'],
+            'targetDir': '/client/images/',
+            'item': {
+                'regions': [
+                    {
+                        'classname': 'zone1',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    },
+                    {
+                        'classname': 'zone2',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    }
+                ]
+            }
+        })
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert not data['success']
+    assert data['message'] == "Invalid filename"
+
+    #
+    # Missing file
+    #
+    response = client.post(
+        '/detection',
+        data=json.dumps({
+            'tags': ['zone1', 'zone2', 'zone3'],
+            'targetDir': '/client/images/',
+            'item': {
+                'filename': 'invalid_dog.jpg',
+                'regions': [
+                    {
+                        'classname': 'zone1',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    },
+                    {
+                        'classname': 'zone2',
+                        'xmin': 0,
+                        'xmax': 100,
+                        'ymin': 0,
+                        'ymax': 100
+                    }
+                ]
+            }
+        })
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert not data['success']
+    assert data['message'] == "Filename doesn't exist"

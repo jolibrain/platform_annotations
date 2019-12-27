@@ -38,14 +38,30 @@ def create_app(test_config=None):
 	data = request.data
 	dataDict = json.loads(data)
 
-	dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
+        try:
+            dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid targetDir'}), 200, {'ContentType':'application/json'}
 
-	item = dataDict['item']
-	filename = item['filename'].decode('utf-8')
-	classname = item['classname'].decode('utf-8')
+        try:
+            item = dataDict['item']
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid item parameter'}), 200, {'ContentType':'application/json'}
+
+        try:
+	    filename = item['filename'].decode('utf-8')
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid filename'}), 200, {'ContentType':'application/json'}
+
+        try:
+	    classname = item['classname'].decode('utf-8')
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid classname'}), 200, {'ContentType':'application/json'}
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
+        # projectName is an optional attribute in method parameters
+        # If it exists, it's added to dstPath
         if 'projectName' in dataDict and len(dataDict['projectName']) > 0:
             projectName = dataDict['projectName']
             dstPath = os.path.join(srcPath, 'train', projectName, classname)
@@ -58,7 +74,7 @@ def create_app(test_config=None):
 	    if exc.errno == errno.EEXIST and os.path.isdir(dstPath):
 		pass
 	    else:
-		raise
+                return json.dumps({'success':False, 'message': 'Error while creating targetDir'}), 200, {'ContentType':'application/json'}
 
 	# check content attribute in item param from http request
 	if 'content' in item and item['content'] is not None:
@@ -83,7 +99,7 @@ def create_app(test_config=None):
 		return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 	    else:
 		# Source file doesn't exist
-		return json.dumps({'success':False}), 200, {'ContentType':'application/json'}
+                return json.dumps({'success':False, 'message': 'Filename doesn\'t exist'}), 200, {'ContentType':'application/json'}
 
     @app.route('/detection', methods=['POST'])
     def detection_task():
@@ -144,17 +160,32 @@ def create_app(test_config=None):
 	data = request.data
 	dataDict = json.loads(data)
 
-	dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
+        try:
+            dataPath = dataDict['targetDir'].decode('utf-8').lstrip('/')
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid targetDir'}), 200, {'ContentType':'application/json'}
 
-	item = dataDict['item']
-	filename = item['filename'].decode('utf-8')
-	regions = item['regions']
+        try:
+            item = dataDict['item']
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid item parameter'}), 200, {'ContentType':'application/json'}
+
+
+        try:
+	    filename = item['filename'].decode('utf-8')
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid filename'}), 200, {'ContentType':'application/json'}
+
+        try:
+	    regions = item['regions']
+        except:
+            return json.dumps({'success':False, 'message': 'Invalid regions'}), 200, {'ContentType':'application/json'}
 
 	srcPath = os.path.join(u'/opt/platform/data', dataPath)
 
         if 'projectName' in dataDict and len(dataDict['projectName']) > 0:
             projectName = dataDict['projectName']
-	    detectionPath = os.path.join(srcPath, projectName, 'detection')
+	    detectionPath = os.path.join(srcPath, 'detection', projectName)
         else:
 	    detectionPath = os.path.join(srcPath, 'detection')
 
@@ -167,7 +198,7 @@ def create_app(test_config=None):
 	    if exc.errno == errno.EEXIST and os.path.isdir(bboxPath):
 		pass
 	    else:
-		raise
+                return json.dumps({'success':False, 'message': 'Error while creating bboxPath'}), 200, {'ContentType':'application/json'}
 
 	try:
 	    os.makedirs(imagePath)
@@ -175,7 +206,7 @@ def create_app(test_config=None):
 	    if exc.errno == errno.EEXIST and os.path.isdir(imagePath):
 		pass
 	    else:
-		raise
+                return json.dumps({'success':False, 'message': 'Error while creating imagePath'}), 200, {'ContentType':'application/json'}
 
 	# check content attribute in item param from http request
 	if 'content' in item and item['content'] is not None:
@@ -189,10 +220,14 @@ def create_app(test_config=None):
 
 	    # Content was not sent in request, just copy original file
 	    # to the training folder
-	    shutil.copy(
-		os.path.join(srcPath, filename),
-		os.path.join(imagePath, filename)
-	    )
+	    if os.path.exists(os.path.join(srcPath, filename)):
+		shutil.copy(
+		    os.path.join(srcPath, filename),
+		    os.path.join(imagePath, filename)
+		)
+	    else:
+		# Source file doesn't exist
+                return json.dumps({'success':False, 'message': 'Filename doesn\'t exist'}), 200, {'ContentType':'application/json'}
 
 	classDescriptionFile = os.path.join(detectionPath, 'corresp.txt')
 
@@ -218,10 +253,14 @@ def create_app(test_config=None):
 	bboxFile = os.path.join(bboxPath, basename + '.txt')
 	with open(bboxFile, 'w') as f:
 
+            # INVALID - dd_widgets/utils.py must be modified
+            # in order to accept this modification of bbox file format
+            #
 	    # write head comment with used tags
 	    # avoid issue with un-synchronized corresp.txt file
-	    if dataDict['tags'] and len(dataDict['tags']) > 0:
-		f.write("# %s\n" % ' '.join(dataDict['tags']))
+            #
+	    # if dataDict['tags'] and len(dataDict['tags']) > 0:
+	    #	f.write("# %s\n" % ' '.join(dataDict['tags']))
 
 	    # write regions to file
 	    for region in regions:
