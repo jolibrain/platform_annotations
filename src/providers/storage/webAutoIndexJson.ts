@@ -81,12 +81,36 @@ export class WebAutoIndexJson implements IAssetProvider {
       }
 
       const filepath = path.join(this.writePath, containerPath, blobName);
-      await axios.delete(filepath);
 
-      await axios.post(filepath, content)
-        .catch(err => {
-          // conflict error on post request
-        });
+      try {
+
+        let res = await axios.post(
+          '/filebrowser/api/login',
+          {"username":"","password":"","recaptcha":""}
+        );
+
+        if(res.status == 200){
+
+          await axios.delete(
+            filepath,
+            { headers: {'X-Auth': res.data} }
+          );
+
+          await axios.post(
+            filepath,
+            {
+              headers: {'X-Auth': res.data},
+              data: content
+            }
+          ).catch(err => {
+            // conflict error on post request
+          });
+
+        }
+
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     /**
@@ -109,8 +133,28 @@ export class WebAutoIndexJson implements IAssetProvider {
       if(!containerPath.endsWith('/')) {
         containerPath += '/';
       }
-        const filepath = path.join(this.writePath, containerPath, blobName);
-        await axios.delete(filepath);
+
+      const filepath = path.join(this.writePath, containerPath, blobName);
+
+      try {
+
+        let res = await axios.post(
+          '/filebrowser/api/login',
+          {"username":"","password":"","recaptcha":""}
+        );
+
+        if(res.status == 200){
+
+          await axios.delete(
+            filepath,
+            { headers: {'X-Auth': res.data} }
+          );
+
+        }
+
+      } catch (err) {
+        console.log(err)
+      }
     }
 
     /**
