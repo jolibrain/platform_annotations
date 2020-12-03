@@ -75,6 +75,28 @@ http {
 }
 ```
 
+In `config/platorm_ui/config.json`:
+
+```{
+  "...": "...",
+  "homeComponent": {
+    "...": "...",
+    "headerLinks": {
+      "linkJupyter": "/code/lab",
+      "linkMenus": [
+        {
+          "name": "Annotation Tool",
+          "icon": "fas fa-external-link-alt",
+          "url": "/annotations/"
+        }
+      ]
+    }
+  },
+  "...": "..."
+}
+```
+
+
 Build containers with following command:
 
 ```
@@ -84,8 +106,8 @@ docker-compose build annotations annotation_tasks
 Run containers:
 
 ```
-docker-compose stop nginx annotations annotation_tasks
-docker-compose rm -f -v nginx annotations annotation_tasks
+docker-compose stop nginx platform_ui annotations annotation_tasks
+docker-compose rm -f -v nginx platform_ui annotations annotation_tasks
 docker-compose up -d
 ```
 
