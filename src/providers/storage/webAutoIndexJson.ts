@@ -91,17 +91,19 @@ export class WebAutoIndexJson implements IAssetProvider {
 
         if(res.status == 200){
 
+          const token = res.data;
+
           await axios.delete(
             filepath,
-            { headers: {'X-Auth': res.data} }
-          );
+            { headers: {'X-Auth': token} }
+          ).catch(err => {
+            // conflict error on delete request
+          });
 
           await axios.post(
             filepath,
-            {
-              headers: {'X-Auth': res.data},
-              data: content
-            }
+            content,
+            { headers: {'X-Auth': res.data} }
           ).catch(err => {
             // conflict error on post request
           });
@@ -145,10 +147,14 @@ export class WebAutoIndexJson implements IAssetProvider {
 
         if(res.status == 200){
 
+          const token = res.data;
+
           await axios.delete(
             filepath,
-            { headers: {'X-Auth': res.data} }
-          );
+            { headers: {'X-Auth': token} }
+          ).catch(err => {
+            // conflict error on delete request
+          });
 
         }
 
