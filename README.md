@@ -2,11 +2,7 @@
 
 ## Installation
 
-
 ```
-cd ${DD_PLATFORM}/code/
-git clone https://gitlab.com/jolibrain/platform_annotations.git
-
 cd ${DD_PLATFORM}/code/${ARCH}/
 vim docker-compose.yml
 ```
@@ -15,20 +11,14 @@ In `docker-compose.yml`:
 
 ```
 ...
-  annotations:
-    container_name: dev_annotations
-    build:
-      context: ../platform_annotations
-      dockerfile: Dockerfile
+  platform_annotations_frontend:
+    image: jolibrain/platform_annotations_frontend
     restart: always
     volumes:
       - /opt/platform:/opt/platform
 
-  annotation_tasks:
-    container_name: dev_annotation_tasks
-    build:
-      context: ../platform_annotations/flask
-      dockerfile: Dockerfile
+  platform_annotations_backend:
+    image: jolibrain/platform_annotations_backend
     restart: always
     volumes:
       - /opt/platform:/opt/platform
@@ -43,9 +33,9 @@ http {
 
   ...
 
-  upstream annotation_tasks {
+  upstream platform_annotatoins_backend {
     least_conn;
-    server annotation_tasks:5000 fail_timeout=0;
+    server platform_annotations_backend:5000 fail_timeout=0;
   }
 
   ...
@@ -58,14 +48,14 @@ http {
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header Host $host;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_pass http://annotation_tasks/;
+      proxy_pass http://platform_annotations_backend/;
     }
 
     location ^~ /annotations/ {
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header Host $host;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_pass http://annotations/;
+      proxy_pass http://platform_annotation_frontend/;
     }
 
     ...
@@ -106,9 +96,16 @@ docker-compose build annotations annotation_tasks
 Run containers:
 
 ```
-docker-compose stop nginx platform_ui annotations annotation_tasks
-docker-compose rm -f -v nginx platform_ui annotations annotation_tasks
+docker-compose stop nginx platform_ui platform_annotations_frontend  platform_annotations_backend
+docker-compose rm -f -v nginx platform_ui platform_annotations_frontend platform_annotations_backend
 docker-compose up -d
+```
+
+## Backend python testing
+
+``` bash
+cd flask
+python -m pytest tests
 ```
 
 
