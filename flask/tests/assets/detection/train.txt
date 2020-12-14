@@ -1,1 +1,1 @@
-/opt/platform/data/client/images/detection/img/dog.jpg /opt/platform/data/client/images/detection/bbox/dog.txt
+/tmp/client/images/detection/img/dog.jpg /tmp/client/images/detection/bbox/dog.txt
