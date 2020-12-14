@@ -10,16 +10,27 @@ import filecmp
 def test_detection(client):
 
     # Root for detection project
-    dstPath = '/opt/platform/data/client/images/'
+    rootPath = '/tmp/'
+    targetDir = 'client/images/'
+    dstFolder = os.path.join(rootPath, targetDir)
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstFolder)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstFolder):
+            pass
+        else:
+            raise
 
     # Source file
     srcFile = "tests/assets/dog.jpg"
 
     # Dest file
-    dstFile = os.path.join(dstPath, 'detection', 'img', 'dog.jpg')
-    dstBbox = os.path.join(dstPath, 'detection', 'bbox', 'dog.txt')
-    dstCorresp = os.path.join(dstPath, 'detection', 'corresp.txt')
-    dstTrain = os.path.join(dstPath, 'detection', 'train.txt')
+    dstFile = os.path.join(dstFolder, 'detection', 'img', 'dog.jpg')
+    dstBbox = os.path.join(dstFolder, 'detection', 'bbox', 'dog.txt')
+    dstCorresp = os.path.join(dstFolder, 'detection', 'corresp.txt')
+    dstTrain = os.path.join(dstFolder, 'detection', 'train.txt')
 
     try:
         os.unlink(dstFile)
@@ -36,25 +47,17 @@ def test_detection(client):
     except:
         pass
 
-    # Create root path if not already exist
-    try:
-        os.makedirs(dstPath)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(dstPath):
-            pass
-        else:
-            raise
-
     # verify test file doesn't already exists in project path
     assert not os.path.exists(dstFile)
 
     # Copy test asset inside project root path
-    copyfile(srcFile, os.path.join(dstPath, 'dog.jpg'))
-    assert os.path.exists(os.path.join(dstPath, 'dog.jpg'))
+    copyfile(srcFile, os.path.join(dstFolder, 'dog.jpg'))
+    assert os.path.exists(os.path.join(dstFolder, 'dog.jpg'))
 
     # Create detection test parameters
     detection_data = {
-        'targetDir': '/client/images/',
+        'rootPath': rootPath,
+        'targetDir': targetDir,
         'item': {
             'filename': 'dog.jpg',
             'regions': [
@@ -108,16 +111,27 @@ def test_detection(client):
 def test_detection_with_project_name(client):
 
     # Root for detection project
-    dstPath = '/opt/platform/data/client/images/'
+    rootPath = '/tmp/'
+    targetDir = 'client/images/'
+    dstFolder = os.path.join(rootPath, targetDir)
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstFolder)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstFolder):
+            pass
+        else:
+            raise
 
     # Source file
     srcFile = "tests/assets/dog.jpg"
 
     # Dest file
-    dstFile = os.path.join(dstPath, 'detection', 'custom', 'img', 'dog.jpg')
-    dstBbox = os.path.join(dstPath, 'detection', 'custom', 'bbox', 'dog.txt')
-    dstCorresp = os.path.join(dstPath, 'detection', 'custom', 'corresp.txt')
-    dstTrain = os.path.join(dstPath, 'detection', 'custom', 'train.txt')
+    dstFile = os.path.join(dstFolder, 'detection', 'custom', 'img', 'dog.jpg')
+    dstBbox = os.path.join(dstFolder, 'detection', 'custom', 'bbox', 'dog.txt')
+    dstCorresp = os.path.join(dstFolder, 'detection', 'custom', 'corresp.txt')
+    dstTrain = os.path.join(dstFolder, 'detection', 'custom', 'train.txt')
 
     try:
         os.unlink(dstFile)
@@ -134,25 +148,17 @@ def test_detection_with_project_name(client):
     except:
         pass
 
-    # Create root path if not already exist
-    try:
-        os.makedirs(dstPath)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(dstPath):
-            pass
-        else:
-            raise
-
     # verify test file doesn't already exists in project path
     assert not os.path.exists(dstFile)
 
     # Copy test asset inside project root path
-    copyfile(srcFile, os.path.join(dstPath, 'dog.jpg'))
-    assert os.path.exists(os.path.join(dstPath, 'dog.jpg'))
+    copyfile(srcFile, os.path.join(dstFolder, 'dog.jpg'))
+    assert os.path.exists(os.path.join(dstFolder, 'dog.jpg'))
 
     # Create detection test parameters
     detection_data = {
-        'targetDir': '/client/images/',
+        'rootPath': rootPath,
+        'targetDir': targetDir,
         'projectName': 'custom',
         'item': {
             'filename': 'dog.jpg',
@@ -207,19 +213,30 @@ def test_detection_with_project_name(client):
 def test_detection_multi_tags(client):
 
     # Root for detection project
-    dstPath = '/opt/platform/data/client/images/'
+    rootPath = '/tmp/'
+    targetDir = 'client/images/'
+    dstFolder = os.path.join(rootPath, targetDir)
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstFolder)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstFolder):
+            pass
+        else:
+            raise
 
     # Source file
     srcFileDog = "tests/assets/dog.jpg"
     srcFileCat = "tests/assets/cat.jpg"
 
     # Dest file
-    dstFileDog = os.path.join(dstPath, 'detection', 'img', 'dog.jpg')
-    dstFileCat = os.path.join(dstPath, 'detection', 'img', 'cat.jpg')
-    dstBboxDog = os.path.join(dstPath, 'detection', 'bbox', 'dog.txt')
-    dstBboxCat = os.path.join(dstPath, 'detection', 'bbox', 'cat.txt')
-    dstCorresp = os.path.join(dstPath, 'detection', 'corresp.txt')
-    dstTrain = os.path.join(dstPath, 'detection', 'train.txt')
+    dstFileDog = os.path.join(dstFolder, 'detection', 'img', 'dog.jpg')
+    dstFileCat = os.path.join(dstFolder, 'detection', 'img', 'cat.jpg')
+    dstBboxDog = os.path.join(dstFolder, 'detection', 'bbox', 'dog.txt')
+    dstBboxCat = os.path.join(dstFolder, 'detection', 'bbox', 'cat.txt')
+    dstCorresp = os.path.join(dstFolder, 'detection', 'corresp.txt')
+    dstTrain = os.path.join(dstFolder, 'detection', 'train.txt')
 
     try:
         os.unlink(dstFileDog)
@@ -251,24 +268,16 @@ def test_detection_multi_tags(client):
     except:
         pass
 
-    # Create root path if not already exist
-    try:
-        os.makedirs(dstPath)
-    except OSError as exc:
-        if exc.errno == errno.EEXIST and os.path.isdir(dstPath):
-            pass
-        else:
-            raise
-
     # Copy test asset inside project root path
-    copyfile(srcFileDog, os.path.join(dstPath, 'dog.jpg'))
-    copyfile(srcFileCat, os.path.join(dstPath, 'cat.jpg'))
-    assert os.path.exists(os.path.join(dstPath, 'dog.jpg'))
-    assert os.path.exists(os.path.join(dstPath, 'cat.jpg'))
+    copyfile(srcFileDog, os.path.join(dstFolder, 'dog.jpg'))
+    copyfile(srcFileCat, os.path.join(dstFolder, 'cat.jpg'))
+    assert os.path.exists(os.path.join(dstFolder, 'dog.jpg'))
+    assert os.path.exists(os.path.join(dstFolder, 'cat.jpg'))
 
     # Create detection test parameters
     detection_data = {
-        'targetDir': '/client/images/',
+        'rootPath': rootPath,
+        'targetDir': targetDir,
         'item': {
             'filename': 'dog.jpg',
             'regions': [
@@ -308,7 +317,8 @@ def test_detection_multi_tags(client):
 
     # Create detection test parameters
     detection_data = {
-        'targetDir': '/client/images/',
+        'rootPath': rootPath,
+        'targetDir': targetDir,
         'item': {
             'filename': 'cat.jpg',
             'regions': [
@@ -362,6 +372,20 @@ def test_detection_multi_tags(client):
 # Test detection task input validation
 def test_detection_validate_input(client):
 
+    # Root for detection project
+    rootPath = '/tmp/'
+    targetDir = 'client/images/'
+    dstFolder = os.path.join(rootPath, targetDir)
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstFolder)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstFolder):
+            pass
+        else:
+            raise
+
     #
     # Invalid targetDir
     #
@@ -403,7 +427,8 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'targetDir': '/client/images/'
+            'rootPath': rootPath,
+            'targetDir': targetDir
         })
     )
 
@@ -420,7 +445,8 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'targetDir': '/client/images/',
+            'rootPath': rootPath,
+            'targetDir': targetDir,
             'item': {
                 'regions': [
                     {
@@ -455,7 +481,8 @@ def test_detection_validate_input(client):
     response = client.post(
         '/detection',
         data=json.dumps({
-            'targetDir': '/client/images/',
+            'rootPath': rootPath,
+            'targetDir': targetDir,
             'item': {
                 'filename': 'invalid_dog.jpg',
                 'regions': [
@@ -484,3 +511,101 @@ def test_detection_validate_input(client):
     # Verify response
     assert not data['success']
     assert data['message'] == "Filename doesn't exist"
+
+# Test detection task on simple image file with forced class_number
+def test_detection_class_number(client):
+
+    # Root for detection project
+    rootPath = '/tmp/'
+    targetDir = 'client/images/'
+    dstFolder = os.path.join(rootPath, targetDir)
+
+    # Create root path if not already exist
+    try:
+        os.makedirs(dstFolder)
+    except OSError as exc:
+        if exc.errno == errno.EEXIST and os.path.isdir(dstFolder):
+            pass
+        else:
+            raise
+
+    # Source file
+    srcFile = "tests/assets/dog.jpg"
+
+    # Dest file
+    dstFile = os.path.join(dstFolder, 'detection', 'img', 'dog.jpg')
+    dstBbox = os.path.join(dstFolder, 'detection', 'bbox', 'dog.txt')
+    dstCorresp = os.path.join(dstFolder, 'detection', 'corresp.txt')
+
+    try:
+        os.unlink(dstFile)
+    except:
+        pass
+
+    try:
+        os.unlink(dstBbox)
+    except:
+        pass
+
+    try:
+        os.unlink(dstCorresp)
+    except:
+        pass
+
+    # verify test file doesn't already exists in project path
+    assert not os.path.exists(dstFile)
+
+    # Copy test asset inside project root path
+    copyfile(srcFile, os.path.join(dstFolder, 'dog.jpg'))
+    assert os.path.exists(os.path.join(dstFolder, 'dog.jpg'))
+
+    # Create detection test parameters
+    detection_data = {
+        'rootPath': rootPath,
+        'targetDir': targetDir,
+        'item': {
+            'filename': 'dog.jpg',
+            'regions': [
+                {
+                    'classname': 'zone1',
+                    'class_number': 2,
+                    'xmin': 0,
+                    'xmax': 100,
+                    'ymin': 0,
+                    'ymax': 100
+                },
+                {
+                    'classname': 'zone2',
+                    'class_number': 1,
+                    'xmin': 0,
+                    'xmax': 50,
+                    'ymin': 0,
+                    'ymax': 100
+                }
+            ]
+        }
+    }
+
+    # Request flask app on detection task with test parameters
+    response = client.post(
+        '/detection',
+        data=json.dumps(detection_data)
+    )
+
+    # Load response json
+    data = json.loads(response.get_data(as_text=True))
+
+    # Verify response
+    assert data['success']
+    assert os.path.exists(dstFile)
+    assert os.path.exists(dstBbox)
+    assert os.path.exists(dstCorresp)
+
+    assert filecmp.cmp(dstBbox, "tests/assets/detection_class_number/bbox.txt")
+    assert filecmp.cmp(dstCorresp, "tests/assets/detection_class_number/corresp.txt")
+
+    # Clean test data
+    os.unlink(dstFile)
+    os.unlink(dstBbox)
+    os.unlink(dstCorresp)
+

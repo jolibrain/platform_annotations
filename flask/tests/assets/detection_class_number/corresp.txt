@@ -1,0 +1,3 @@
+0 none
+1 zone2
+2 zone1
