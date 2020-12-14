@@ -16,11 +16,8 @@ python -m pytest tests
 Add a new container inside socker-compose.yml :
 
 ```
-annotation_tasks:
-  container_name: dev_annotation_tasks
-  build:
-    context: ../../platform_annotations/flask
-    dockerfile: Dockerfile
+platform_annotations_backend:
+  image: jolibrain/platform_annotations_backend
   restart: always
   volumes:
     - /opt/platform:/opt/platform
@@ -34,9 +31,9 @@ build the container.
 Add this rule to Platform nginx config file *config/nginx/nginx.conf* :
 
 ```
-upstream annotation_tasks {
+upstream platform_annotations_backend {
   least_conn;
-  server annotation_tasks:5000 fail_timeout=0;
+  server platform_annotations_backend:5000 fail_timeout=0;
 }
 
 server {
@@ -47,6 +44,6 @@ server {
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header Host $host;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_pass http://annotation_tasks/;
+    proxy_pass http://platform_annotations_backend/;
   }
 ```
