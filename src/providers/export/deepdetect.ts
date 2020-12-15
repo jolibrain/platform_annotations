@@ -83,6 +83,13 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         containerName += '/';
       }
 
+      // Remove / path prefix
+      // platform_annotations_backend uses python3
+      // os.path.join() method will not join path starting with a /
+      if(containerName.startsWith('/')) {
+        containerName = containerName.substring(1);
+      }
+
       // project name must be used in targetted dir path
       // in order to use the same image path in various projects
       let projectName = ""
@@ -140,6 +147,13 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
       // Append / path suffix if missing
       if(!containerName.endsWith('/')) {
         containerName += '/';
+      }
+
+      // Remove / path prefix
+      // platform_annotations_backend uses python3
+      // os.path.join() method will not join path starting with a /
+      if(containerName.startsWith('/')) {
+        containerName = containerName.substring(1);
       }
 
       // project name must be used in targetted dir path
