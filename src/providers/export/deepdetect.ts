@@ -124,13 +124,36 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
         filename: options.asset.name,
         content: null,
         regions: options.regions.map(r => {
-          return {
-            classname: r.tags[0],
+
+          const classname = r.tags[0];
+          let class_number = null;
+
+          if(
+            this.project &&
+              this.project.tags &&
+              this.project.tags.length > 0
+          ) {
+            const tagNames = this.project.tags.map(t => t.name);
+
+            if(tagNames.indexOf(classname) !== -1) {
+
+              // tags do not include classname "none"
+              // and so they should begin at index = 1
+              class_number = tagNames.indexOf(classname) + 1;
+
+            }
+          }
+
+          let region = {
+            class_number: class_number,
+            classname: classname,
             xmin: parseInt(r.points[0].x),
             ymin: parseInt(r.points[0].y),
             xmax: parseInt(r.points[2].x),
             ymax: parseInt(r.points[2].y)
           }
+
+          return region;
         })
       };
 
