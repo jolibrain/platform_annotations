@@ -91,13 +91,6 @@ In `config/platorm_ui/config.json`:
 }
 ```
 
-
-Build containers with following command:
-
-```
-docker-compose build annotations annotation_tasks
-```
-
 Run containers:
 
 ```
@@ -110,6 +103,13 @@ CURRENT_UID=$(id -u):$(id -g) MUID=$(id -u) \
 CURRENT_UID=$(id -u):$(id -g) MUID=$(id -u) \
  docker-compose up -d
 ```
+
+## Build containers
+
+```
+docker-compose build annotations annotation_tasks
+```
+
 
 ## Backend python testing
 
