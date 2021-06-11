@@ -96,9 +96,14 @@ docker-compose build annotations annotation_tasks
 Run containers:
 
 ```
-docker-compose stop platform_ui platform_annotations_frontend  platform_annotations_backend
-docker-compose rm -f -v platform_ui platform_annotations_frontend platform_annotations_backend
-docker-compose up -d
+CURRENT_UID=$(id -u):$(id -g) MUID=$(id -u) \
+ docker-compose stop platform_ui platform_annotations_frontend  platform_annotations_backend
+
+CURRENT_UID=$(id -u):$(id -g) MUID=$(id -u) \
+ docker-compose rm -f -v platform_ui platform_annotations_frontend platform_annotations_backend
+
+CURRENT_UID=$(id -u):$(id -g) MUID=$(id -u) \
+ docker-compose up -d
 ```
 
 ## Backend python testing
