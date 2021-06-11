@@ -33,7 +33,12 @@ http {
 
   ...
 
-  upstream platform_annotatoins_backend {
+  upstream platform_annotations_frontend {
+    least_conn;
+    server platform_annotations_frontend:80 fail_timeout=0;
+  }
+  
+  upstream platform_annotations_backend {
     least_conn;
     server platform_annotations_backend:5000 fail_timeout=0;
   }
@@ -55,7 +60,7 @@ http {
       proxy_set_header X-Real-IP $remote_addr;
       proxy_set_header Host $host;
       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-      proxy_pass http://platform_annotation_frontend/;
+      proxy_pass http://platform_annotations_frontend/;
     }
 
     ...
