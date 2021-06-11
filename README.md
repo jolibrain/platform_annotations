@@ -96,8 +96,8 @@ docker-compose build annotations annotation_tasks
 Run containers:
 
 ```
-docker-compose stop nginx platform_ui platform_annotations_frontend  platform_annotations_backend
-docker-compose rm -f -v nginx platform_ui platform_annotations_frontend platform_annotations_backend
+docker-compose stop platform_ui platform_annotations_frontend  platform_annotations_backend
+docker-compose rm -f -v platform_ui platform_annotations_frontend platform_annotations_backend
 docker-compose up -d
 ```
 
