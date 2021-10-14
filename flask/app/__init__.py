@@ -155,6 +155,7 @@ def create_app(test_config=None):
         /opt/platform/data/client/images/detection/img/dog.jpg /opt/platform/data/client/images/detection/bbox/dog.txt
         """
         data = request.data
+        app.logger.info('%s', data)
         dataDict = json.loads(data)
 
         rootPath = dataDict['rootPath'] if 'rootPath' in dataDict else '/opt/platform/data'
@@ -249,7 +250,8 @@ def create_app(test_config=None):
             f.write("0 none\n")
             f.close()
 
-        print(classDescriptions)
+        # print(classDescriptions)
+        app.logger.info('%s', classDescriptions)
 
         # For each region, add class_number attribute
         # that can be found in class description file
@@ -269,12 +271,14 @@ def create_app(test_config=None):
                     'index': region['class_number'],
                     'name': region['classname']
                 })
-        print(regions)
+        # print(regions)
+        app.logger.info('%s', regions)
 
         # create bbox file
         basename, file_extension = os.path.splitext(filename)
         bboxFile = os.path.join(bboxPath, basename + '.txt')
 
+        app.logger.info('%s', bboxFile)
         # write regions to file
         with open(bboxFile, 'w') as f:
             for region in regions:
