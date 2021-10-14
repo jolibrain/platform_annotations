@@ -184,6 +184,12 @@ export class AssetService {
     public async getAssetMetadata(asset: IAsset): Promise<IAssetMetadata> {
         Guard.null(asset);
 
+        const delay = millis => new Promise((resolve, reject) => {
+            setTimeout(_ => resolve(), millis);
+        });
+
+        await delay(1000);
+
         const fileName = `${asset.id}${constants.assetMetadataFileExtension}`;
         try {
             const json = await this.storageProvider.readText(fileName);
