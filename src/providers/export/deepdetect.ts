@@ -34,16 +34,15 @@ export class DeepdetectExportProvider extends ExportProvider<IDeepdetectExportPr
      */
     public async export(): Promise<void> {
 
-        // FIXME: hack to fetch modelType
-        // it should be available by calling directly modelTayp attribute on providerOptions
-        const providerOptions = JSON.parse(JSON.stringify(this.project.targetConnection.providerOptions))
+        const providerOptions = JSON.parse(JSON.stringify(
+            this.project.targetConnection.providerOptions));
 
-        switch(providerOptions.modelType) {
-          case 'classification':
-            this.exportClassification(providerOptions.containerName, this.options);
+        switch (providerOptions.modelType) {
+          case "classification":
+            await this.exportClassification(providerOptions.containerName, this.options);
             break;
-          case 'detection':
-            this.exportDetection(providerOptions.containerName, this.options);
+          case "detection":
+            await this.exportDetection(providerOptions.containerName, this.options);
             break;
           default:
             break;
