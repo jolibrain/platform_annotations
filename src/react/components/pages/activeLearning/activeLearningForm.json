@@ -46,7 +46,7 @@
                         },
                         "modelDdUrl": {
                             "title": "DeepDetect Platform API Url",
-                            "default": "http://eris:18104/api/private",
+                            "default": "http://DEEPDETECT_PLATFORM_ROOT_URL/api/private",
                             "type": "string"
                         },
                         "modelDdService": {
