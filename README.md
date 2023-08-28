@@ -12,16 +12,16 @@ In `docker-compose.yml`:
 ```
 ...
   platform_annotations_frontend:
-    image: jolibrain/platform_annotations_frontend
+    image: docker.jolibrain.com/platform_annotations_frontend
     restart: always
     volumes:
-      - /opt/platform:/opt/platform
+      - ${DD_PLATFORM}:/opt/platform
 
   platform_annotations_backend:
-    image: jolibrain/platform_annotations_backend
+    image: docker.jolibrain.com/platform_annotations_backend
     restart: always
     volumes:
-      - /opt/platform:/opt/platform
+      - ${DD_PLATFORM}:/opt/platform
 ```
 
 In `config/nginx/nginx.conf`:
