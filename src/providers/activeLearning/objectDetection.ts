@@ -117,11 +117,15 @@ export class ObjectDetection {
 
         const predictions = await this.detect(image);
         predictions.forEach((prediction) => {
-            const left = Math.max(0, prediction.bbox[0] * xRatio);
-            const top = Math.max(0, prediction.bbox[1] * yRatio);
-            const width = Math.max(0, prediction.bbox[2] * xRatio);
-            const height = Math.max(0, prediction.bbox[3] * yRatio);
-
+            const xmin = Math.max(0, prediction.bbox[0] * xRatio);
+            const ymin = Math.max(0, prediction.bbox[1] * yRatio);
+            const xmax = Math.max(0, prediction.bbox[2] * xRatio);
+            const ymax = Math.max(0, prediction.bbox[3] * yRatio);
+	    const width = xmax - xmin
+	    const height = ymax - ymin
+	    const left = xmin
+	    const top = ymin
+	    
             regions.push({
                 id: shortid.generate(),
                 type: RegionType.Rectangle,
@@ -133,20 +137,20 @@ export class ObjectDetection {
                     height,
                 },
                 points: [{
-                    x: left,
-                    y: top,
+                    x: xmin,
+                    y: ymin,
                 },
                 {
-                    x: left + width,
-                    y: top,
+                    x: xmax,
+                    y: ymin,
                 },
                 {
-                    x: left + width,
-                    y: top + height,
+                    x: xmax,
+                    y: ymax,
                 },
                 {
-                    x: left,
-                    y: top + height,
+                    x: xmin,
+                    y: ymax,
                 }],
             });
         });
@@ -273,9 +277,9 @@ export class ObjectDetection {
 
             const bbox = [];
             bbox[0] = c.bbox.xmin;
-            bbox[1] = c.bbox.ymax;
-            bbox[2] = c.bbox.xmax - c.bbox.xmin;
-            bbox[3] = c.bbox.ymin - c.bbox.ymax;
+            bbox[1] = c.bbox.ymin;
+            bbox[2] = c.bbox.xmax;
+            bbox[3] = c.bbox.ymax;
 
             objects.push({
                 bbox: bbox as [number, number, number, number],
