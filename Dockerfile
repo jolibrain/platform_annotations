@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:12.22.1-alpine3.12
 WORKDIR /usr/src/app
 COPY . /usr/src/app/
 
@@ -12,7 +12,7 @@ COPY . /usr/src/app/
 #
 RUN set -ex; \
   apk --no-cache add --virtual native-deps \
-  g++ gcc libgcc libstdc++ linux-headers make python && \
+  g++ gcc libgcc libstdc++ linux-headers make python3 && \
   NOYARNPOSTINSTALL=1 yarn install; \
   yarn cache clean; \
   yarn run build

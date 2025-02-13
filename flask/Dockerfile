@@ -1,5 +1,5 @@
-FROM python:3-alpine
-RUN python -m pip install --upgrade pip
+FROM python:3.12-alpine
+RUN python3 -m pip install --upgrade pip
 
 # We copy just the requirements.txt first to leverage Docker cache
 RUN mkdir -p /app

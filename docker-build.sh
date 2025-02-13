@@ -1,6 +1,6 @@
 #!/bin/sh
 
-NAME_ROOT=jolibrain/platform_annotations
+NAME_ROOT=docker.jolibrain.com/platform_annotations
 TAG=latest
 
 FRONTEND_IMAGE=${NAME_ROOT}_frontend:${TAG}
